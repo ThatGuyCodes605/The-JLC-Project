@@ -21,4 +21,6 @@ int main(int argc, char** argv) {
             return 3;
         }
     }
+    fclose(file);
+    return 0;
 }
