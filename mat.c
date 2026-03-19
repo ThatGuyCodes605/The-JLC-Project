@@ -3,9 +3,7 @@
 #include <sys/sendfile.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#define BUFFSIZE 1024
 int main(int argc, char** argv) {
-    char buff[BUFFSIZE];
     if(argc != 2) {
         fprintf(stderr, "Usage: mat <file>\n");
         return 1;
