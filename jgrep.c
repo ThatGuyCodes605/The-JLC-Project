@@ -20,11 +20,11 @@ int main(int argc, char** argv) {
     size_t capacity = BUFFSIZE;
     char* buf = malloc(capacity);
     int found = 0;
-    for (;;) {          // outer — one line per iteration
+    for (;;) {
         size_t len = 0;
         int got_line = 0;
 
-        for (;;) {      // inner — read chunks until full line
+        for (;;) {
             if (fgets(buf + len, capacity - len, file) == NULL) {
                 got_line = (len > 0);
                 break;
