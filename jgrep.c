@@ -19,28 +19,26 @@ int main(int argc, char** argv) {
     }
     size_t capacity = BUFFSIZE;
     char* buf = malloc(capacity);
-    for (;;) {
+    for (;;) {          // outer — one line per iteration
         size_t len = 0;
         int got_line = 0;
-        if (fgets(buf + len, capacity - len, file) == NULL) {
-            got_line = (len > 0);
-            break;
+
+        for (;;) {      // inner — read chunks until full line
+            if (fgets(buf + len, capacity - len, file) == NULL) {
+                got_line = (len > 0);
+                break;
+            }
+            len = strlen(buf);
+            if (buf[len - 1] == '\n') { got_line = 1; break; }
+
+            capacity *= 2;
+            char *tmp = realloc(buf, capacity);
+            if (tmp == NULL) { perror("realloc"); free(buf); return 4; }
+            buf = tmp;
         }
-        len = strlen(buf);
-        if (buf[len-1] == '\n') {
-            got_line = 1;
-            break;
-        }
-        capacity *= 2;
-        char* tmp = realloc(buf, capacity);
-        if (tmp == NULL) {
-            perror("FATAL ERROR");
-            return 4;
-        }
-        buf = tmp;
-        if (got_line) {
-            break;
-        }
+
+        if (!got_line) break;
+
         if (strstr(buf, argv[1]) != NULL) {
             printf("%s", buf);
         }
