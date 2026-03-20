@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-all: mat jgrep move cpy print lf perm spec srt
+all: mat jgrep move cpy print lf perm spec srt chown
 
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
@@ -30,8 +30,13 @@ spec: spec.c
 srt: srt.c
 	$(CC) $(CFLAGS) srt.c -o srt
 
-clean:
-	rm -f mat jgrep move cpy print lf perm spec srt
+chown: chown.c
+	$(CC) $(CFLAGS) chown.c -o chown
 
-install: mat jgrep move cpy lf perm spec srt
-	sudo cp mat jgrep move cpy print lf perm spec srt /usr/bin/
+clean:
+	rm -f mat jgrep move cpy print lf perm spec srt chown
+
+install: mat jgrep move cpy lf perm spec srt chown
+	sudo cp mat jgrep move cpy print lf perm spec srt chown /usr/bin/
+	sudo cp chown.1 /usr/share/man/man1/
+	sudo mandb
