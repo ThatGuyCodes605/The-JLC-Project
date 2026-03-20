@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define BUFFSIZE 1024
 int main(int argc, char** argv) {
     if (argc != 3) {
@@ -19,5 +20,7 @@ int main(int argc, char** argv) {
     while (fgets(buff, BUFFSIZE, source) != NULL) {
         fputs(buff, destination);
     }
+    fclose(source);
+    fclose(destination);
     return 0;
 }
