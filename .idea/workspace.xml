@@ -21,8 +21,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="added nap.c">
-      <change afterPath="$PROJECT_DIR$/dt.c" afterDir="false" />
+    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="added dt.c">
+      <change afterPath="$PROJECT_DIR$/wm.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
@@ -124,7 +124,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1774080597924</updated>
-      <workItem from="1774080598936" duration="4198000" />
+      <workItem from="1774080598936" duration="5309000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
       <option name="closed" value="true" />
@@ -166,7 +166,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774104445317</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added dt.c">
+      <option name="closed" value="true" />
+      <created>1774105050837</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774105050837</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +201,8 @@
     <MESSAGE value="changed return 1 to return 0" />
     <MESSAGE value="change &quot;C99 or later for portability&quot; to &quot;C99 for portability&quot;" />
     <MESSAGE value="added nap.c" />
-    <option name="LAST_COMMIT_MESSAGE" value="added nap.c" />
+    <MESSAGE value="added dt.c" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dt.c" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

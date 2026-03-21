@@ -75,6 +75,7 @@ Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
 | `print` | `echo`     | `print "text"`  | Print a string to stdout                    |
 | `nap`   | `sleep`    | `nap <seconds>` | Sleep for a specified number of seconds     |
 | `dt`    | `date`     | `dt`            | Print current time in human-readable format |
+| `wm`    | `whoami`   | `wm`            | Print current user name                     |
 
 ---
 

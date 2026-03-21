@@ -15,6 +15,7 @@ MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
 
 all: $(BINS)
 
+
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
 
@@ -84,16 +85,5 @@ nap: nap.c
 dt: dt.c
 	$(CC) $(CFLAGS) dt.c -o dt
 
-clean:
-	rm -f $(BINS)
-
-install: all
-	install -d $(BINDIR) $(MANDIR)
-	install -m 755 $(BINS) $(BINDIR)
-	install -m 644 $(MANS) $(MANDIR)
-	-mandb -q
-
-uninstall:
-	cd $(BINDIR) && rm -f $(BINS)
-	cd $(MANDIR) && rm -f $(notdir $(MANS))
-	-mandb -q
+wm: wm.c
+	$(CC) $(CFLAGS) wm.c -o wm
