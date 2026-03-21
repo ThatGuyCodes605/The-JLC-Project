@@ -11,11 +11,18 @@ static int tail(FILE *f, long n) {
     long idx = 0;
     while (fgets(buf, TL_BUFSIZ, f)) {
         char *dup = strdup(buf);
-        if (!dup) { perror("strdup"); free(ring); return 1; }
+        if (!dup) {
+            for (long j = 0; j < n; j++) free(ring[j]);
+            free(ring);
+            perror("strdup");
+            return 1;
+        }
         free(ring[idx % n]);
         ring[idx % n] = dup;
         idx++;
     }
+    /* ring[0..n-1] holds the last n lines in circular order.
+     * base is the index of the oldest line; show is how many to print. */
     long show = (idx < n) ? idx : n;
     long base = (idx > n) ? (idx - n) : 0;
     for (long i = 0; i < show; i++) {

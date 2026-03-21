@@ -10,13 +10,13 @@ static int mkd_p(const char *path) {
     for (char *p = tmp + 1; *p; p++) {
         if (*p == '/') {
             *p = '\0';
-            if (mkdir(tmp, 0755) != 0 && errno != EEXIST) {
+            if (mkdir(tmp, 0755) != 0 && errno != EEXIST) { /* 0755 = rwxr-xr-x */
                 perror(tmp); free(tmp); return 1;
             }
             *p = '/';
         }
     }
-    if (mkdir(tmp, 0755) != 0 && errno != EEXIST) {
+    if (mkdir(tmp, 0755) != 0 && errno != EEXIST) { /* 0755 = rwxr-xr-x */
         perror(tmp); free(tmp); return 1;
     }
     free(tmp);
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
     int err = 0;
     for (int i = start; i < argc; i++) {
         if (parents) { if (mkd_p(argv[i])) err = 1; }
-        else if (mkdir(argv[i], 0755) != 0) { perror(argv[i]); err = 1; }
+        else if (mkdir(argv[i], 0755) != 0) { perror(argv[i]); err = 1; } /* 0755 = rwxr-xr-x */
     }
     return err;
 }

@@ -19,9 +19,11 @@ static int del_r(const char *path) {
     int err = 0;
     while ((de = readdir(d)) != NULL) {
         if (is_dot(de->d_name)) continue;
-        char *sub = malloc(strlen(path) + strlen(de->d_name) + 2);
+        /* snprintf(NULL,0,...) returns the length that would be written (C99) */
+        int len = snprintf(NULL, 0, "%s/%s", path, de->d_name);
+        char *sub = malloc(len + 1);
         if (!sub) { perror("malloc"); err = 1; continue; }
-        sprintf(sub, "%s/%s", path, de->d_name);
+        snprintf(sub, len + 1, "%s/%s", path, de->d_name);
         err |= del_r(sub);
         free(sub);
     }
