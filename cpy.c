@@ -7,7 +7,7 @@
 #define BUFFSIZE 1024
 int main(int argc, char** argv) {
     if (argc != 3) {
-        printf("Usage: cpy <source> <destination>\n");
+        fprintf(stderr, "Usage: cpy <source> <destination>\n");
         return 1;
     }
     FILE *source = fopen(argv[1], "rb");

@@ -3,7 +3,7 @@
 #define BUFFSIZE 1024
 int main(int argc, char** argv) {
     if (argc != 2) {
-        printf("Usage: mat <file>\n");
+        fprintf(stderr, "Usage: mat <file>\n");
         return 1;
     }
     FILE *f = fopen(argv[1], "r");

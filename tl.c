@@ -10,8 +10,10 @@ static int tail(FILE *f, long n) {
     char buf[TL_BUFSIZ];
     long idx = 0;
     while (fgets(buf, TL_BUFSIZ, f)) {
+        char *dup = strdup(buf);
+        if (!dup) { perror("strdup"); free(ring); return 1; }
         free(ring[idx % n]);
-        ring[idx % n] = strdup(buf);
+        ring[idx % n] = dup;
         idx++;
     }
     long show = (idx < n) ? idx : n;
