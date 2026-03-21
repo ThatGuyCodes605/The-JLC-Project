@@ -23,8 +23,12 @@ int main(int argc, char** argv) {
         return 2;
     }
     while ((de = readdir(dir)) != NULL) {
-        names = realloc(names, sizeof(char*) * (count + 1));
-        names[count++] = strdup(de->d_name);
+        char **tmp = realloc(names, sizeof(char*) * (count + 1));
+        if (tmp == NULL) { perror("FATAL ERROR"); closedir(dir); return 3; }
+        names = tmp;
+        names[count] = strdup(de->d_name);
+        if (names[count] == NULL) { perror("FATAL ERROR"); closedir(dir); return 3; }
+        count++;
     }
     closedir(dir);
     for (int i = 0; i < count - 1; i++) {
@@ -40,5 +44,6 @@ int main(int argc, char** argv) {
         printf("%s\n", names[i]);
         free(names[i]);
     }
+    free(names);
     return 0;
 }

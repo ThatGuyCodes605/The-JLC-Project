@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
     }
     size_t capacity = BUFFSIZE;
     char* buf = malloc(capacity);
+    if (buf == NULL) { perror("FATAL ERROR"); return 1; }
     int found = 0;
     for (;;) {
         size_t len = 0;
@@ -44,10 +45,6 @@ int main(int argc, char** argv) {
             printf("%s", buf);
             found = 1;
         }
-    }
-    if (buf == NULL) {
-        perror("FATAL ERROR");
-        return 1;
     }
     if (!found) {
         printf("NOT FOUND!\n");

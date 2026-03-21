@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-all: mat jgrep move cpy print lf perm spec srt hn chwn brit
+all: mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env
 
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
@@ -12,7 +12,7 @@ jgrep: jgrep.c
 move: move.c
 	$(CC) $(CFLAGS) move.c -o move
 
-cpy cpy.c:
+cpy: cpy.c
 	$(CC) $(CFLAGS) cpy.c -o cpy
 
 print: print.c
@@ -39,8 +39,35 @@ chwn: chwn.c
 brit: brit.c
 	$(CC) $(CFLAGS) brit.c -o brit
 
-clean:
-	rm -f mat jgrep move cpy print lf perm spec srt hn chwn brit
+cnt: cnt.c
+	$(CC) $(CFLAGS) cnt.c -o cnt
 
-install: mat jgrep move cpy lf perm spec srt chwn
-	sudo cp mat jgrep move cpy print lf perm spec srt hn chwn brit /usr/bin/
+hd: hd.c
+	$(CC) $(CFLAGS) hd.c -o hd
+
+tl: tl.c
+	$(CC) $(CFLAGS) tl.c -o tl
+
+tch: tch.c
+	$(CC) $(CFLAGS) tch.c -o tch
+
+mkd: mkd.c
+	$(CC) $(CFLAGS) mkd.c -o mkd
+
+del: del.c
+	$(CC) $(CFLAGS) del.c -o del
+
+lnk: lnk.c
+	$(CC) $(CFLAGS) lnk.c -o lnk
+
+cwd: cwd.c
+	$(CC) $(CFLAGS) cwd.c -o cwd
+
+env: env.c
+	$(CC) $(CFLAGS) env.c -o env
+
+clean:
+	rm -f mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env
+
+install: all
+	sudo cp mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env /usr/bin/

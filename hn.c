@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
             return 2;
         }
         while (fgets(buf, BUFFSIZE, f) != NULL) {
-            printf("%s\n", buf);
+            printf("%s", buf);
         }
         fclose(f);
         return 0;
