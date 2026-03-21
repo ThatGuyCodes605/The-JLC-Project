@@ -31,7 +31,7 @@ Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
 | `move` | `mv`    | `move <src> <dest>`            | Move or rename a file                            |
 | `del`  | `rm`    | `del [-r] <file>...`           | Delete file(s); `-r` removes directories         |
 | `lnk`  | `ln`    | `lnk [-s] <target> <link>`     | Hard link; `-s` creates a symbolic link          |
-| `tch`  | `touch` | `tch <file>...`                | Create file(s) or update modification time       |
+| `tch`  | `touch` | `tch <file>...`                | Create file(s) or update modification dt       |
 | `brit` | `tee`   | `cmd \| brit <file>`           | Write stdin to both stdout and a file            |
 
 ### Directory Operations
@@ -68,12 +68,13 @@ Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
 
 ### System
 
-| Binary | Like       | Usage                          | Description                                      |
-|--------|------------|--------------------------------|--------------------------------------------------|
-| `hn`   | `hostname` | `hn [name]`                    | Show hostname; optionally set it                 |
-| `env`  | `printenv` | `env [prefix]`                 | Print environment; optional prefix filter        |
-| `print`| `echo`     | `print "text"`                 | Print a string to stdout                         |
-| `nap`  | `sleep`    | `nap <seconds>`                | Sleep for a specified number of seconds          |
+| Binary  | Like       | Usage           | Description                                 |
+|---------|------------|-----------------|---------------------------------------------|
+| `hn`    | `hostname` | `hn [name]`     | Show hostname; optionally set it            |
+| `env`   | `printenv` | `env [prefix]`  | Print environment; optional prefix filter   |
+| `print` | `echo`     | `print "text"`  | Print a string to stdout                    |
+| `nap`   | `sleep`    | `nap <seconds>` | Sleep for a specified number of seconds     |
+| `dt`    | `date`     | `dt`            | Print current time in human-readable format |
 
 ---
 

@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-all: mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap
+all: mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt
 
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
@@ -69,8 +69,11 @@ env: env.c
 nap: nap.c
 	$(CC) $(CFLAGS) nap.c -o nap
 
+dt: dt.c
+	$(CC) $(CFLAGS) dt.c -o dt
+
 clean:
-	rm -f mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap
+	rm -f mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt
 
 install: all
-	sudo cp mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap /usr/bin/
+	sudo cp mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt /usr/bin/

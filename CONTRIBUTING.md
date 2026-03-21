@@ -51,30 +51,31 @@ Contributions that violate these laws (e.g., adding unnecessary features, increa
 
 These are the existing tools — read their source before writing a new one to understand the expected style:
 
-| Binary  | Source       | Description                                      |
-|---------|--------------|--------------------------------------------------|
-| `brit`  | `brit.c`     | Write stdin to stdout and a file (like `tee`)    |
-| `chwn`  | `chwn.c`     | Change file owner and group (names or IDs)       |
-| `cnt`   | `cnt.c`      | Count lines, words, bytes (like `wc`)            |
-| `cpy`   | `cpy.c`      | Copy a file                                      |
-| `cwd`   | `cwd.c`      | Print current working directory (like `pwd`)     |
-| `del`   | `del.c`      | Delete file(s); `-r` removes directories         |
-| `env`   | `env.c`      | Print environment variables; optional prefix     |
-| `hd`    | `hd.c`       | Print first N lines of file (like `head`)        |
-| `hn`    | `hn.c`       | Show or set hostname                             |
-| `jgrep` | `jgrep.c`    | Search for pattern in file or stdin              |
-| `lf`    | `lf.c`       | List files in a directory (sorted)               |
-| `lnk`   | `lnk.c`      | Create hard or symbolic link                     |
-| `mat`   | `mat.c`      | Print file contents (like `cat`)                 |
-| `mkd`   | `mkd.c`      | Create directory; `-p` creates parents           |
-| `move`  | `move.c`     | Move or rename a file                            |
-| `perm`  | `perm.c`     | Show file permissions in `rwxrwxrwx` format      |
-| `print` | `print.c`    | Print a string to stdout (like `echo`)           |
-| `spec`  | `spec.c`     | Print file, suppressing adjacent duplicates      |
-| `srt`   | `srt.c`      | Sort lines in a file alphabetically              |
-| `tch`   | `tch.c`      | Create file or update modification time          |
-| `tl`    | `tl.c`       | Print last N lines of file (like `tail`)         |
-| `nap`   | `nap.c`      | Sleep for a specified number of seconds          |
+| Binary  | Source    | Description                                   |
+|---------|-----------|-----------------------------------------------|
+| `brit`  | `brit.c`  | Write stdin to stdout and a file (like `tee`) |
+| `chwn`  | `chwn.c`  | Change file owner and group (names or IDs)    |
+| `cnt`   | `cnt.c`   | Count lines, words, bytes (like `wc`)         |
+| `cpy`   | `cpy.c`   | Copy a file                                   |
+| `cwd`   | `cwd.c`   | Print current working directory (like `pwd`)  |
+| `del`   | `del.c`   | Delete file(s); `-r` removes directories      |
+| `env`   | `env.c`   | Print environment variables; optional prefix  |
+| `hd`    | `hd.c`    | Print first N lines of file (like `head`)     |
+| `hn`    | `hn.c`    | Show or set hostname                          |
+| `jgrep` | `jgrep.c` | Search for pattern in file or stdin           |
+| `lf`    | `lf.c`    | List files in a directory (sorted)            |
+| `lnk`   | `lnk.c`   | Create hard or symbolic link                  |
+| `mat`   | `mat.c`   | Print file contents (like `cat`)              |
+| `mkd`   | `mkd.c`   | Create directory; `-p` creates parents        |
+| `move`  | `move.c`  | Move or rename a file                         |
+| `perm`  | `perm.c`  | Show file permissions in `rwxrwxrwx` format   |
+| `print` | `print.c` | Print a string to stdout (like `echo`)        |
+| `spec`  | `spec.c`  | Print file, suppressing adjacent duplicates   |
+| `srt`   | `srt.c`   | Sort lines in a file alphabetically           |
+| `tch`   | `tch.c`   | Create file or update modification dt         |
+| `tl`    | `tl.c`    | Print last N lines of file (like `tail`)      |
+| `nap`   | `nap.c`   | Sleep for a specified number of seconds       |
+| `dt`    | `dt.c`    | Print current dt in human-readable format     |
 
 ---
 
