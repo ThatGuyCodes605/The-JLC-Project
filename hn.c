@@ -30,8 +30,7 @@ int main(int argc, char** argv) {
         }
         fprintf(f, "%s", argv[1]);
         fclose(f);
-        return 1;
+        return 0;
     }
-    printf("HOW THE FUCK DID YOU MANAGE THAT!?");
-    return -1;
+    return -1; /* impossible error */
 }

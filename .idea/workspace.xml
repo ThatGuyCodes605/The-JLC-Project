@@ -21,14 +21,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/The-JLC-Project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cpy.c" beforeDir="false" afterPath="$PROJECT_DIR$/cpy.c" afterDir="false" />
+    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hn.c" beforeDir="false" afterPath="$PROJECT_DIR$/hn.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,6 +67,9 @@
   "associatedIndex": 1
 }]]></component>
   <component name="ProjectId" id="3BFMvmZcPhzNNca4MnT7SCq8IGv" />
+  <component name="ProjectStatusUIService"><![CDATA[{
+  "uiKindId": "Widget"
+}]]></component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -124,8 +121,25 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1774080597924</updated>
-      <workItem from="1774080598936" duration="1061000" />
+      <workItem from="1774080598936" duration="1973000" />
     </task>
+    <task id="LOCAL-00001" summary="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
+      <option name="closed" value="true" />
+      <created>1774081746535</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774081746535</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
+      <option name="closed" value="true" />
+      <created>1774081757774</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774081757774</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,6 +160,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
