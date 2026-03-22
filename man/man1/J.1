@@ -1,0 +1,37 @@
+.TH J 1 "2026" "The-JLC-Project" "User Commands"
+.SH NAME
+J \- change the current working directory
+.SH SYNOPSIS
+.B J
+.I directory
+.SH DESCRIPTION
+.B J
+changes the current working directory to
+.IR directory .
+This is a minimal JLC equivalent of
+.BR cd (1p).
+.SH EXIT STATUS
+.TP
+.B 0
+Success.
+.TP
+.B 1
+Wrong number of arguments or
+.BR chdir (2)
+failed.
+.SH EXAMPLES
+.TP
+Change to /tmp:
+.EX
+J /tmp
+.EE
+.TP
+Change to home directory:
+.EX
+J ~
+.EE
+.SH SEE ALSO
+.BR cd (1p),
+.BR cwd (1)
+.SH AUTHORS
+The-JLC-Project contributors.
