@@ -3,6 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+  </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
 }</component>
@@ -23,6 +26,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="added man page for sim.c and added sim to Makefile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dt.c" beforeDir="false" afterPath="$PROJECT_DIR$/dt.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +134,8 @@
       <updated>1774080597924</updated>
       <workItem from="1774080598936" duration="6970000" />
       <workItem from="1774174534272" duration="2882000" />
+      <workItem from="1774385958164" duration="257000" />
+      <workItem from="1774386225615" duration="584000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
       <option name="closed" value="true" />
