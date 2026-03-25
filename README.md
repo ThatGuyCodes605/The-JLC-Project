@@ -68,14 +68,13 @@ Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
 
 ### System
 
-| Binary  | Like       | Usage                                                 | Description                                 |
-|---------|------------|-------------------------------------------------------|---------------------------------------------|
-| `hn`    | `hostname` | `hn [name]`                                           | Show hostname; optionally set it            |
-| `env`   | `printenv` | `env [prefix]`                                        | Print environment; optional prefix filter   |
-| `print` | `echo`     | `print "text"`                                        | Print a string to stdout                    |
-| `nap`   | `sleep`    | `nap <seconds>`                                       | Sleep for a specified number of seconds     |
-| `dt`    | `date`     | `dt [--iso-time --us-time] [-ds=<char>] [-ts=<char>]` | Print current time in human-readable format |
-| `wm`    | `whoami`   | `wm`                                                  | Print current user name                     |
+| Binary  | Like       | Usage           | Description                                 |
+|---------|------------|-----------------|---------------------------------------------|
+| `hn`    | `hostname` | `hn [name]`     | Show hostname; optionally set it            |
+| `env`   | `printenv` | `env [prefix]`  | Print environment; optional prefix filter   |
+| `print` | `echo`     | `print "text"`  | Print a string to stdout                    |
+| `nap`   | `sleep`    | `nap <seconds>` | Sleep for a specified number of seconds     |
+| `dt`    | `date`     | `dt`            | Print current time in human-readable format |
 
 ---
 
@@ -148,39 +147,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full code guidelines and how to add n
 
 ---
 
-## Alternative Compilers Support
-
-The JLC Project supports compilation with alternative C compilers:
-
-- **cproc** - frontend for C11 for QBE
-- **lacc** - A simple, self-hosting C compiler
-- **qbe** - compiler backend targeting AMD64 (Linux and OSX), ARM64, and RISC-V64
-- **scc** - Simple C Compiler
-- **tcc** - Tiny C Compiler
-
-To compile with an alternative compiler, use:
-```bash
-make CC=cproc
-make CC=lacc
-make CC=scc
-make CC=tcc
-```
-
-Note: Installation of alternative compilers is the user's responsibility.
-
-## Performance Optimizations
-
-All utilities are compiled with optimized flags (-O3 -flto) for maximum performance.
-The `short` and `duct` utilities have been specifically optimized for minimal resource usage.
-
-## Documentation
-
-Man pages for all utilities are available in the `man/man1/` directory. After installation, you can view documentation using `man <utility_name>`.
-
-See `man/README.md` for installation instructions.
-
----
-
 ## License
 
 [GPLv3](LICENSE) — © The JLC Project contributors
+

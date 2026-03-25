@@ -1,95 +1,43 @@
 .TH DT 1 "2026" "The-JLC-Project" "User Commands"
 .SH NAME
-dt \- print the current date
+dt \- print the current date and time
 .SH SYNOPSIS
 .B dt
-.RB [ --iso-time | --us-time ]
-.RB [ -ds= \fIchar\fR ]
-.RB [ --help ]
-.RB [ -ts=\fIchar\fR ]
 .SH DESCRIPTION
 .B dt
-prints the current local date in one of several formats.
+prints the current local date and time in the format:
 .PP
-By default, it prints the date in DD/MM/YYYY format (day/month/year).
-With
-.B --iso-time
-or
-.B -iso
-, it prints in YYYY-MM-DD format.
-With
-.B --us-time
-or
-.B -us
-, it prints in MM/DD/YYYY format.
-The date separator can be customized with
-.B -ds=\fIchar\fR
-or
-.B --date-separator=\fIchar\fR
-(default is '/').
-.B -ts=\fIchar\fR
-or
-.B --time-separator=\fIchar\fR
-can be used to set the time separator in the output (default is ':').
-
+.RS
+YYYY-MM-DD HH:MM:SS
+.RE
 .PP
 It reads the system clock via
 .BR time (2)
 and
 .BR localtime (3),
-then formats the result with
-.BR printf (3).
-.SH OPTIONS
-.TP
-.B --iso-time, -iso
-Print date in ISO format (YYYY-MM-DD).
-.TP
-.B --us-time, -us
-Print date in US format (MM/DD/YYYY).
-.TP
-.B -ds=\fIchar\fR, --date-separator=\fIchar\fR
-Set the date separator to \fIchar\fR (default '/').
-.TP
-.B -ts=\fIchar\fR, --time-separator=\fIchar\fR
-Set the time separator to \fIchar\fR (default ':').
-.TP
-.B --help
-Display usage information and exit.
+then formats the result with a single
+.BR printf (3)
+call.
+There are no flags or arguments.
 .SH EXIT STATUS
 .TP
 .B 0
-Success.
-.TP
-.B 1
-Invalid arguments.
+Always exits 0.
 .SH EXAMPLES
 .TP
-Print the current date in default format:
+Print the current timestamp:
 .B dt
 .PP
 Output example:
 .EX
-21/03/2026
+2026-03-21 15:04:05
 .EE
 .TP
-Print in ISO format:
-.B dt --iso-time
-.PP
-Output example:
+Capture in a variable (sh):
 .EX
-2026-03-21
+NOW=$(dt)
+echo "Started at $NOW"
 .EE
-.TP
-Print in US format with custom separator:
-.B dt --us-time -ds=.
-.PP
-Output example:
-.EX
-03.21.2026
-.EE
-.TP
-Display help:
-.B dt --help
 .SH SEE ALSO
 .BR date (1)
 .SH AUTHORS

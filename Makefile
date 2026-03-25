@@ -1,23 +1,17 @@
-# Default compiler (can be overridden with make CC=compiler)
-CC ?= gcc
-# Optimized flags for performance
-CFLAGS = -O3 -flto -DNDEBUG -Wall -Wextra
-MANDIR = man/man1
+CC = gcc
+CFLAGS = -Wall -Wextra
 
-COMPILER ?= gcc
-CC = $(COMPILER)
-CFLAGS = -Wall -Wextra -O2
 BINDIR = /usr/bin
+MANDIR = /usr/share/man/man1
 
-BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct
+BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt
 
 MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
        man/man1/cwd.1 man/man1/del.1 man/man1/dt.1 man/man1/env.1 \
-       man/man1/hd.1 man/man1/hn.1 man/man1/jgrep.1 man/man1/J.1 \
-       man/man1/lf.1 man/man1/lnk.1 man/man1/mat.1 man/man1/mkd.1 \
-       man/man1/move.1 man/man1/nap.1 man/man1/perm.1 man/man1/print.1 \
-       man/man1/spec.1 man/man1/srt.1 man/man1/tch.1 man/man1/tl.1 \
-       man/man1/whoisdat.1 man/man1/wm.1 man/man1/sim.1
+       man/man1/hd.1 man/man1/hn.1 man/man1/jgrep.1 man/man1/lf.1 \
+       man/man1/lnk.1 man/man1/mat.1 man/man1/mkd.1 man/man1/move.1 \
+       man/man1/nap.1 man/man1/perm.1 man/man1/print.1 man/man1/spec.1 \
+       man/man1/srt.1 man/man1/tch.1 man/man1/tl.1
 
 all: $(BINS)
 
@@ -89,24 +83,6 @@ nap: nap.c
 
 dt: dt.c
 	$(CC) $(CFLAGS) dt.c -o dt
-
-wm: wm.c
-	$(CC) $(CFLAGS) wm.c -o wm
-
-J: J.c
-	$(CC) $(CFLAGS) J.c -o J
-
-whoisdat: whoisdat.c
-	$(CC) $(CFLAGS) whoisdat.c -o whoisdat
-
-sim: sim.c
-	$(CC) $(CFLAGS) sim.c -o sim
-
-short: short.c
-	$(CC) $(CFLAGS) short.c -o short
-
-duct: duct.c
-	$(CC) $(CFLAGS) duct.c -o duct
 
 clean:
 	rm -f $(BINS)

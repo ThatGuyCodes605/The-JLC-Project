@@ -75,8 +75,7 @@ These are the existing tools — read their source before writing a new one to u
 | `tch`   | `tch.c`   | Create file or update modification dt         |
 | `tl`    | `tl.c`    | Print last N lines of file (like `tail`)      |
 | `nap`   | `nap.c`   | Sleep for a specified number of seconds       |
-| `dt`    | `dt.c`    | Print current time in human-readable format   |
-| `wm`    | `wm.c`    | Print current user name (like `whoami`)       |
+| `dt`    | `dt.c`    | Print current dt in human-readable format     |
 
 ---
 
