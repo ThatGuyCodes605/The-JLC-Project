@@ -148,25 +148,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full code guidelines and how to add n
 
 ---
 
-## License
-
-[GPLv3](LICENSE) — © The JLC Project contributors
-
-<<<<<<< HEAD
-=======
-- **chown**: Change file owner and group
-- **cpy**: Copy files
-- **jgrep**: Search for patterns in files
-- **lf**: List files
-- **mat**: Print file contents
-- **move**: Move/rename files
-- **perm**: Show file permissions
-- **print**: Print text
-- **spec**: Show file information
-- **srt**: Sort lines in a file
-- **short**: Sort lines in a file (optimized minimalist alternative)
-- **duct**: Print system architecture information (ultra-minimal alternative)
-
 ## Alternative Compilers Support
 
 The JLC Project supports compilation with alternative C compilers:
@@ -197,4 +178,9 @@ The `short` and `duct` utilities have been specifically optimized for minimal re
 Man pages for all utilities are available in the `man/man1/` directory. After installation, you can view documentation using `man <utility_name>`.
 
 See `man/README.md` for installation instructions.
->>>>>>> bbc4e87 (yes)
+
+---
+
+## License
+
+[GPLv3](LICENSE) — © The JLC Project contributors

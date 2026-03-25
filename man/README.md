@@ -4,7 +4,7 @@ This directory contains man pages for all utilities in The JLC Project.
 
 ## Available Man Pages
 
-- `chown.1` - Change file owner and group
+- `chwn.1` - Change file owner and group
 - `cpy.1` - Copy files
 - `jgrep.1` - Search for patterns in files
 - `lf.1` - List files
@@ -30,7 +30,7 @@ This will copy all executables and man pages to the appropriate system directori
 After installation, you can view man pages using:
 
 ```
-man chown
+man chwn
 man cpy
 man jgrep
 # etc.

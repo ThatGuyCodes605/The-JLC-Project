@@ -4,11 +4,9 @@ CC ?= gcc
 CFLAGS = -O3 -flto -DNDEBUG -Wall -Wextra
 MANDIR = man/man1
 
-<<<<<<< HEAD
 BINDIR = /usr/bin
-MANDIR = /usr/share/man/man1
 
-BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat
+BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct
 
 MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
        man/man1/cwd.1 man/man1/del.1 man/man1/dt.1 man/man1/env.1 \
@@ -16,20 +14,9 @@ MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
        man/man1/lf.1 man/man1/lnk.1 man/man1/mat.1 man/man1/mkd.1 \
        man/man1/move.1 man/man1/nap.1 man/man1/perm.1 man/man1/print.1 \
        man/man1/spec.1 man/man1/srt.1 man/man1/tch.1 man/man1/tl.1 \
-       man/man1/whoisdat.1 man/man1/wm.1
-BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm sim
-
-MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
-       man/man1/cwd.1 man/man1/del.1 man/man1/dt.1 man/man1/env.1 \
-       man/man1/hd.1 man/man1/hn.1 man/man1/jgrep.1 man/man1/lf.1 \
-       man/man1/lnk.1 man/man1/mat.1 man/man1/mkd.1 man/man1/move.1 \
-       man/man1/nap.1 man/man1/perm.1 man/man1/print.1 man/man1/spec.1 \
-       man/man1/srt.1 man/man1/tch.1 man/man1/tl.1 man/man1/wm.1 man/man1/sim.1
+       man/man1/whoisdat.1 man/man1/wm.1 man/man1/sim.1
 
 all: $(BINS)
-=======
-all: mat jgrep move cpy print lf perm spec srt chown short duct
->>>>>>> bbc4e87 (yes)
 
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
@@ -108,10 +95,16 @@ J: J.c
 
 whoisdat: whoisdat.c
 	$(CC) $(CFLAGS) whoisdat.c -o whoisdat
+
 sim: sim.c
 	$(CC) $(CFLAGS) sim.c -o sim
 
-<<<<<<< HEAD
+short: short.c
+	$(CC) $(CFLAGS) short.c -o short
+
+duct: duct.c
+	$(CC) $(CFLAGS) duct.c -o duct
+
 clean:
 	rm -f $(BINS)
 
@@ -125,23 +118,3 @@ uninstall:
 	cd $(BINDIR) && rm -f $(BINS)
 	cd $(MANDIR) && rm -f $(notdir $(MANS))
 	-mandb -q
-=======
-short: short.c
-	$(CC) $(CFLAGS) short.c -o short
-
-duct: duct.c
-	$(CC) $(CFLAGS) duct.c -o duct
-
-clean:
-	rm -f mat jgrep move cpy print lf perm spec srt chown short duct
-	rm -f $(MANDIR)/*.1
-
-install: mat jgrep move cpy lf perm spec srt chown short duct
-	sudo cp mat jgrep move cpy print lf perm spec srt chown short duct /usr/bin/
-	sudo cp $(MANDIR)/*.1 /usr/share/man/man1/
-	sudo mandb
-
-manpages:
-	cp $(MANDIR)/*.1 /usr/share/man/man1/
-	sudo mandb
->>>>>>> bbc4e87 (yes)
