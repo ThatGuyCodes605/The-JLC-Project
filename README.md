@@ -68,14 +68,14 @@ Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
 
 ### System
 
-| Binary  | Like       | Usage           | Description                                 |
-|---------|------------|-----------------|---------------------------------------------|
-| `hn`    | `hostname` | `hn [name]`     | Show hostname; optionally set it            |
-| `env`   | `printenv` | `env [prefix]`  | Print environment; optional prefix filter   |
-| `print` | `echo`     | `print "text"`  | Print a string to stdout                    |
-| `nap`   | `sleep`    | `nap <seconds>` | Sleep for a specified number of seconds     |
-| `dt`    | `date`     | `dt`            | Print current time in human-readable format |
-| `wm`    | `whoami`   | `wm`            | Print current user name                     |
+| Binary  | Like       | Usage                                                 | Description                                 |
+|---------|------------|-------------------------------------------------------|---------------------------------------------|
+| `hn`    | `hostname` | `hn [name]`                                           | Show hostname; optionally set it            |
+| `env`   | `printenv` | `env [prefix]`                                        | Print environment; optional prefix filter   |
+| `print` | `echo`     | `print "text"`                                        | Print a string to stdout                    |
+| `nap`   | `sleep`    | `nap <seconds>`                                       | Sleep for a specified number of seconds     |
+| `dt`    | `date`     | `dt [--iso-time --us-time] [-ds=<char>] [-ts=<char>]` | Print current time in human-readable format |
+| `wm`    | `whoami`   | `wm`                                                  | Print current user name                     |
 
 ---
 
