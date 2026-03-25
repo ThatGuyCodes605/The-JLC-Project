@@ -1,6 +1,10 @@
-CC = gcc
-CFLAGS = -Wall -Wextra
+# Default compiler (can be overridden with make CC=compiler)
+CC ?= gcc
+# Optimized flags for performance
+CFLAGS = -O3 -flto -DNDEBUG -Wall -Wextra
+MANDIR = man/man1
 
+<<<<<<< HEAD
 BINDIR = /usr/bin
 MANDIR = /usr/share/man/man1
 
@@ -23,6 +27,9 @@ MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
        man/man1/srt.1 man/man1/tch.1 man/man1/tl.1 man/man1/wm.1 man/man1/sim.1
 
 all: $(BINS)
+=======
+all: mat jgrep move cpy print lf perm spec srt chown short duct
+>>>>>>> bbc4e87 (yes)
 
 mat: mat.c
 	$(CC) $(CFLAGS) mat.c -o mat
@@ -104,6 +111,7 @@ whoisdat: whoisdat.c
 sim: sim.c
 	$(CC) $(CFLAGS) sim.c -o sim
 
+<<<<<<< HEAD
 clean:
 	rm -f $(BINS)
 
@@ -117,3 +125,23 @@ uninstall:
 	cd $(BINDIR) && rm -f $(BINS)
 	cd $(MANDIR) && rm -f $(notdir $(MANS))
 	-mandb -q
+=======
+short: short.c
+	$(CC) $(CFLAGS) short.c -o short
+
+duct: duct.c
+	$(CC) $(CFLAGS) duct.c -o duct
+
+clean:
+	rm -f mat jgrep move cpy print lf perm spec srt chown short duct
+	rm -f $(MANDIR)/*.1
+
+install: mat jgrep move cpy lf perm spec srt chown short duct
+	sudo cp mat jgrep move cpy print lf perm spec srt chown short duct /usr/bin/
+	sudo cp $(MANDIR)/*.1 /usr/share/man/man1/
+	sudo mandb
+
+manpages:
+	cp $(MANDIR)/*.1 /usr/share/man/man1/
+	sudo mandb
+>>>>>>> bbc4e87 (yes)
