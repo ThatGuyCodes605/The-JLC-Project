@@ -148,7 +148,39 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full code guidelines and how to add n
 
 ---
 
+## Alternative Compilers Support
+
+The JLC Project supports compilation with alternative C compilers:
+
+- **cproc** - frontend for C11 for QBE
+- **lacc** - A simple, self-hosting C compiler
+- **qbe** - compiler backend targeting AMD64 (Linux and OSX), ARM64, and RISC-V64
+- **scc** - Simple C Compiler
+- **tcc** - Tiny C Compiler
+
+To compile with an alternative compiler, use:
+```bash
+make CC=cproc
+make CC=lacc
+make CC=scc
+make CC=tcc
+```
+
+Note: Installation of alternative compilers is the user's responsibility.
+
+## Performance Optimizations
+
+All utilities are compiled with optimized flags (-O3 -flto) for maximum performance.
+The `short` and `duct` utilities have been specifically optimized for minimal resource usage.
+
+## Documentation
+
+Man pages for all utilities are available in the `man/man1/` directory. After installation, you can view documentation using `man <utility_name>`.
+
+See `man/README.md` for installation instructions.
+
+---
+
 ## License
 
 [GPLv3](LICENSE) — © The JLC Project contributors
-
