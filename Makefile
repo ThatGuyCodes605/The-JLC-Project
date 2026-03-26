@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra
 BINDIR = /usr/bin
 MANDIR = /usr/share/man/man1
 
-BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt
+BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt duct wm whoisdat short sim
 
 MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
        man/man1/cwd.1 man/man1/del.1 man/man1/dt.1 man/man1/env.1 \
@@ -83,6 +83,21 @@ nap: nap.c
 
 dt: dt.c
 	$(CC) $(CFLAGS) dt.c -o dt
+
+duct: duct.c
+	$(CC) $(CFLAGS) duct.c -o duct
+
+wm: wm.c
+	$(CC) $(CFLAGS) wm.c -o wm
+
+sim: sim.c
+	$(CC) $(CFLAGS) sim.c -o sim
+
+whoisdat: whoisdat.c
+	$(CC) $(CFLAGS) whoisdat.c -o whoisdat
+
+short: short.c
+	$(CC) $(CFLAGS) short.c -o short
 
 clean:
 	rm -f $(BINS)
