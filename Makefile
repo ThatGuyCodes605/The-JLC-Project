@@ -108,10 +108,37 @@ duct: duct.c
 clean:
 	rm -f $(BINS)
 
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# Platform-specific installation commands
+ifeq ($(UNAME_S),Linux)
+	INSTALL_BIN = install -m 755
+	INSTALL_MAN = install -m 644
+	MKDIR = install -d
+elifneq ($(findstring CYGWIN,$(UNAME_S)),)
+	INSTALL_BIN = install -m 755
+	INSTALL_MAN = install -m 644
+	MKDIR = install -d
+else
+	# Default (Darwin/FreeBSD/others) - use cp and chmod
+	INSTALL_BIN = cp
+	INSTALL_MAN = cp
+	MKDIR = mkdir -p
+endif
+
 install: all
-	install -d $(BINDIR) $(MANDIR)
-	install -m 755 $(BINS) $(BINDIR)
-	install -m 644 $(MANS) $(MANDIR)
+	$(MKDIR) $(BINDIR) $(MANDIR)
+	@for bin in $(BINS); do \
+		if [ -f "$$bin" ]; then \
+			$(INSTALL_BIN) "$$bin" "$(BINDIR)/"; \
+		fi \
+	done
+	@for man in $(MANS); do \
+		if [ -f "$$man" ]; then \
+			$(INSTALL_MAN) "$$man" "$(MANDIR)/"; \
+		fi \
+	done
 	-mandb -q
 
 uninstall:
