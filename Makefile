@@ -4,6 +4,9 @@ CC ?= gcc
 CFLAGS = -O3 -flto -DNDEBUG -Wall -Wextra
 MANDIR = man/man1
 
+COMPILER ?= gcc
+CC = $(COMPILER)
+CFLAGS = -Wall -Wextra -O2
 BINDIR = /usr/bin
 
 BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct
