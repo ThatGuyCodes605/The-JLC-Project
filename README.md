@@ -10,14 +10,31 @@ A minimal, suckless reimplementation of common UNIX utilities — one file, one 
 
 ## Quick Start
 
+### POSIX Systems (Linux, BSD, macOS)
+
 ```sh
 git clone https://github.com/ThatGuyCodes605/The-JLC-Project.git
 cd The-JLC-Project
 make
-sudo make install   # copies all binaries to /usr/bin
+sudo make install   # copies all binaries to /usr/local/bin
 ```
 
-Requires: `gcc`, `make`, a POSIX system (Linux, BSD).
+### Windows
+
+On Windows, you can use the provided installation script:
+
+```cmd
+git clone https://github.com/ThatGuyCodes605/The-JLC-Project.git
+cd The-JLC-Project
+install.bat
+```
+
+Or compile manually with MinGW/MSYS2:
+```cmd
+mingw32-make
+```
+
+Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 
 ---
 
@@ -140,7 +157,7 @@ perm file.c
 - **≤ 100 lines** per function/code unit
 - **≤ 5 headers** per file — no bloated includes
 - **No external dependencies** — libc only
-- **POSIX portable** — compiles on Linux and BSD
+- **Cross-platform portable** — compiles on Linux, BSD, macOS, and Windows (with MinGW/MSYS2)
 - **GPLv3** — free software, always
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full code guidelines and how to add new utilities.
