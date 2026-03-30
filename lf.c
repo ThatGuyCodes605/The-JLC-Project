@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+int cmp_str(const void *a, const void *b) {
+    return strcmp(*(char **)a, *(char **)b);
+}
 int main(int argc, char** argv) {
     struct dirent* de;
     DIR* dir;
@@ -31,16 +34,8 @@ int main(int argc, char** argv) {
         count++;
     }
     closedir(dir);
-    for (int i = 0; i < count - 1; i++) {
-       for (int j = 0; j < count - i - 1; j++) {
-           if (strcmp(names[j], names[j + 1]) > 0) {
-               char* tmp = names[j];
-               names[j] = names[j + 1];
-               names[j + 1] = tmp;
-           }
-       }
-    }
-    for (int i = 0; i < count; i++) {
+    qsort(names, count, sizeof(char*), cmp_str);
+   for (int i = 0; i < count; i++) {
         printf("%s\n", names[i]);
         free(names[i]);
     }
