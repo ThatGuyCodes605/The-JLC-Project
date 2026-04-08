@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     char* buf = malloc(capacity);
     if (buf == NULL) { perror("FATAL ERROR"); return 1; }
     int found = 0;
+    int lineno = 0;
     for (;;) {
         size_t len = 0;
         int got_line = 0;
@@ -40,9 +41,9 @@ int main(int argc, char** argv) {
         }
 
         if (!got_line) break;
-
+        for (lineno++; buf[len - 1] == '\n'; len--) buf[len - 1] = '\0';
         if (strstr(buf, argv[1]) != NULL) {
-            printf("%s", buf);
+            printf("%d: %s\n", lineno, buf);
             found = 1;
         }
     }
