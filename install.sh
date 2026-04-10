@@ -70,10 +70,6 @@ for manpage in man/man1/*.1; do
     fi
 done
 
-# Update man database if available
-echo "Updating man database..."
-mandb -q >/dev/null 2>&1 || true
-
 echo "Installation complete!"
 echo "Binaries installed to: $BINDIR"
 echo "Man pages installed to: $MANDIR/man1"

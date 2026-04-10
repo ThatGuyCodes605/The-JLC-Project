@@ -51,8 +51,4 @@ for manpage in man/man1/*.1; do
     fi
 done
 
-# Update man database if available
-echo "Updating man database..."
-mandb -q >/dev/null 2>&1 || true
-
 echo "Uninstallation complete!"
