@@ -1,0 +1,52 @@
+.TH JFETCH 1 "2026" "The-JLC-Project" "User Commands"
+.SH NAME
+jfetch \- display system information with ASCII art
+.SH SYNOPSIS
+.B jfetch
+.SH DESCRIPTION
+.B jfetch
+displays system information in a formatted output alongside ASCII art.
+It retrieves and displays the following information:
+.TP
+.B Username and Hostname
+Current user and system hostname.
+.TP
+.B OS and Kernel
+Operating system name and kernel version.
+.TP
+.B Uptime
+System uptime in days, hours, and minutes.
+.TP
+.B RAM
+Free and total memory usage.
+.TP
+.B Disk
+Used and total disk space in human-readable format.
+.TP
+.B Shell
+Current shell path.
+.TP
+.B Terminal
+Terminal type (TERM environment variable).
+.TP
+.B Window Manager
+Detected window manager (checks for dwm).
+.TP
+.B Architecture
+CPU architecture.
+.SH EXIT STATUS
+.TP
+.B 0
+Successful execution.
+.SH EXAMPLES
+.TP
+Display system information:
+.EX
+jfetch
+.EE
+.SH SEE ALSO
+.BR fetch (1),
+.BR uname (1),
+.BR free (1)
+.SH AUTHORS
+The-JLC-Project contributors.
