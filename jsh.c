@@ -6,9 +6,12 @@
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#define MAX_CMDS 64
+#define MAX_ARGS 64
 #define VER "0.0.1" 
 #define USR getenv("USER")
 #define clear() printf("\033[H\033[J")
+
 void init_shell() {
     clear();
     printf("Initializing JSH...\n");
@@ -33,29 +36,123 @@ void init_shell() {
     usleep(200000);
 
 }
-void printDIR(){
+int take_input(char* s){
+    char prompt[1536];
     char cwd[1024];
     char hostname[256];
-
-    if(getcwd(cwd, sizeof(cwd)) != NULL){
-        gethostname(hostname, sizeof(hostname));
-        printf("%s@%s %s", USR, hostname, cwd);
+    getcwd(cwd, sizeof(cwd));
+    gethostname(hostname, sizeof(hostname));
+    snprintf(prompt, sizeof(prompt), "%s@%s:%s$ ", USR, hostname, cwd);
+    char* input;
+    do {
+        input = readline(prompt);
+        if (input == NULL){
+            printf("\n");
+        }
+    } while (input == NULL);
+    if (input == NULL){
+        printf("\n");
+        return 1;
     }
-    else{
-        perror("getcwd() error");
-    }
-}
-int take_input(char* s){
-    char* input = readline(" $ ");
     if(strlen(input) > 0){
         add_history(input);
         strcpy(s, input);
+        free(input);
         return 0;
     }
-    else{
-        return 1;
-    }
+    free(input);
+    return 1;
 }
+void control_c_handler(int sig){
+    signal(SIGINT, control_c_handler);
+    printf("\nCaught signal %d. Use 'exit' to quit JSH.\n", sig);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+int split(char* str, const char* delim, char** out) {
+    int i = 0;
+
+    char* saveptr;
+    char* token = strtok_r(str, delim, &saveptr);
+
+    while (token && i < MAX_CMDS - 1) {
+        out[i++] = token;
+        token = strtok_r(NULL, delim, &saveptr);
+    }
+
+    out[i] = NULL;
+    return i;
+}
+
+void parse_args(char* cmd, char** args) {
+    int i = 0;
+
+    char* saveptr;
+    char* token = strtok_r(cmd, " \t", &saveptr);
+
+    while (token && i < MAX_ARGS - 1) {
+        args[i++] = token;
+        token = strtok_r(NULL, " \t", &saveptr);
+    }
+
+    args[i] = NULL;
+}
+
+int exec_pipeline(char** cmds, int n, int background) {
+    int pipes[n-1][2];
+    if (n == 1) {
+        pid_t pid = fork();
+        if (pid == 0) {
+            char* args[MAX_ARGS];
+            parse_args(cmds[0], args);
+            execvp(args[0], args);
+            perror("exec failed");
+            exit(1);
+        }
+        if (!background)
+            wait(NULL);
+        return 0;
+    }
+    for (int i = 0; i < n-1; i++)
+        pipe(pipes[i]);
+
+    for (int i = 0; i < n; i++) {
+        if (fork() == 0) {
+            if (i > 0)
+                dup2(pipes[i-1][0], STDIN_FILENO);
+
+            if (i < n-1)
+                dup2(pipes[i][1], STDOUT_FILENO);
+
+            for (int j = 0; j < n-1; j++) {
+                close(pipes[j][0]);
+                close(pipes[j][1]);
+            }
+
+            char* args[MAX_ARGS];
+            parse_args(cmds[i], args);
+
+            execvp(args[0], args);
+            perror("exec failed");
+            exit(1);
+        }
+    }
+
+    for (int i = 0; i < n-1; i++) {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+    }
+
+    if (!background)
+        for (int i = 0; i < n; i++)
+            wait(NULL);
+
+    return 0;
+}
+
+/*
 int exec_args(char** args){
     pid_t pid = fork();
     if(pid == -1){
@@ -73,55 +170,43 @@ int exec_args(char** args){
         return 0;
     }
 }
-int execArgsPiped(char** parsed, char** parsedpipe){
-    int pipefd[2];
-    pid_t p1, p2;
-    if(pipe(pipefd) < 0){
-        perror("Pipe failed");
-        return 4;
-    }
-    p1 = fork();
-    if (p1 < 0){
-        perror("Fork failed");
-        return 2;
-    }
-    if (p1 == 0){
-        close(pipefd[0]);
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-        if (execvp(parsed[0], parsed) < 0){
-            perror("Execution failed");
-            exit(0);
-        }   
-    } 
-    else{
-        p2 = fork();
-        if (p2 < 0){
-            perror("Fork failed");
-            return 2;
-        }
-        if (p2 == 0){
-            close(pipefd[1]);
-            dup2(pipefd[0], STDIN_FILENO);
-            close(pipefd[0]);
-            if (execvp(parsedpipe[0], parsedpipe) < 0){
-                perror("Execution failed");
-                exit(0);
-            }
-        }
-        else{
-            wait(NULL);
-            wait(NULL);
-        }
-    }
-    return 0;
-}
+*/
+
 int own_cmd_handler(char** parsed){
-    if (strcmp(parsed[0], "cd") == 0){
+    if (strcmp(parsed[0], "help") == 0){
+        printf("JSH - Jamie's Shell\n");
+        printf("Version: %s\n", VER);
+        printf("Author: Jamie\n");
+        printf("Built-in commands:\n");
+        printf("  ver - Show the current version of JSH\n");
+        printf("  cd [dir] - Change the current directory to 'dir'\n");
+        printf("  history - Show command history\n");
+        printf("  clear - Clear the terminal screen\n");
+        printf("  help - Display this help message\n");
+        printf("  exit - Exit the shell\n");
+        printf("Use '<command> | <command>' for piped commands\n");
+        return 6;
+    }
+    else if (strcmp(parsed[0], "ver") == 0){
+        printf("JSH version %s\n", VER);
+        return 7;
+    }
+    else if (strcmp(parsed[0], "clear") == 0){
+        clear();
+        return 8;
+    }
+    else if (strcmp(parsed[0], "history") == 0){
+        HIST_ENTRY** hist = history_list();
+        for (int i = 0; hist[i]; i++){
+            printf("%d: %s\n", i + history_base, hist[i]->line);
+        }
+        return 9;
+    }
+    else if (strcmp(parsed[0], "cd") == 0){
         if (chdir(parsed[1]) < 0){
             perror("cd failed");
         }
-        return 1;
+        return 10;
     }
     else if (strcmp(parsed[0], "exit") == 0){
         printf("Exiting JSH...\n");
@@ -129,72 +214,54 @@ int own_cmd_handler(char** parsed){
     }
     return 0;
 }
+void execute_input(char* input) {
+    char* and_cmds[MAX_CMDS];
+    int and_count = split(input, "&&", and_cmds);
 
-int parse_pipe(char* s, char** strpiped){
-    for (int i = 0; i < 2; i++){
-        strpiped[i] = strsep(&s, "|");
-        if (strpiped[i] == NULL){
+    for (int i = 0; i < and_count; i++) {
+        char* cmd = and_cmds[i];
+
+        /* check background */
+        int background = 0;
+        if (strchr(cmd, '&')) {
+            background = 1;
+            cmd[strcspn(cmd, "&")] = '\0';
+        }
+
+        /* FIX: Create a temporary copy of cmd for built-in parsing */
+        char cmd_copy[1024];
+        strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1);
+        cmd_copy[sizeof(cmd_copy) - 1] = '\0';
+
+        /* handle built-in commands using the copy */
+        char* args[MAX_ARGS];
+        parse_args(cmd_copy, args);
+        if (args[0] && own_cmd_handler(args)) {
+            continue;
+        }
+
+        /* split pipes using the untouched original cmd */
+        char* pipe_cmds[MAX_CMDS];
+        int pipe_count = split(cmd, "|", pipe_cmds);
+
+        /* execute pipeline */
+        int status = exec_pipeline(pipe_cmds, pipe_count, background);
+
+        /* stop on failure for && */
+        if (status != 0){
             break;
         }
     }
-    if (strpiped[1] == NULL){
-        return 0;
-   }    
-    else {
-        return 1;
-    }
-}   
-void parse_space(char* s, char** parsed){
-    for (int i = 0; i < 100; i++){
-        parsed[i] = strsep(&s, " ");
-        if (parsed[i] == NULL){
-            break;
-        }
-        if (strlen(parsed[i]) == 0){
-            i--;
-        }
-    }
 }
-int prosess_string(char* s, char** parsed, char** parsedpipe){
-    char* strpiped[2];
-    int piped = 0;
-    piped = parse_pipe(s, strpiped);
-    if(piped){
-        parse_space(strpiped[0], parsed);
-        parse_space(strpiped[1], parsedpipe);
-    }
-    else {
-        parse_space(s, parsed);
-        if (own_cmd_handler(parsed))
-            return 0;
-        return 1;
-    }
-     if (own_cmd_handler(parsedpipe)){
-        return 0;
-    }
-     else{
-      return 1 + piped;
-    }
-}
-
 int main(void){
     char input[1024];
-    char* parsed_args_pipe[100];
-    char* parsed_args[100];
-    int execFlag = 0;
+    signal(SIGINT, control_c_handler);
     init_shell();
-        while(1){
-        printDIR();
+    while(1){
         if(take_input(input)){
             continue;
         }
-        execFlag = prosess_string(input, parsed_args, parsed_args_pipe);
-        if(execFlag == 1){
-            exec_args(parsed_args);
-        }
-        if(execFlag == 2){
-            execArgsPiped(parsed_args, parsed_args_pipe);
-        }
+        execute_input(input);
     }
     return 0;
 }

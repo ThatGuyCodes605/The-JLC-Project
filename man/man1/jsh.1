@@ -29,6 +29,29 @@ Command history is maintained via GNU readline.
 Normal exit via the
 .B exit
 builtin.
+.SS Internal Execution Codes
+These are returned internally and not visible to the user.
+.TP
+.B 2
+fork failed in command execution.
+.TP
+.B 3
+pipe initialisation failed.
+.TP
+.B 4, 5
+fork failed in piped execution.
+.TP
+.B 6\(en10
+Builtin command handled (help, ver, clear, history, cd).
+.TP
+.B 11
+Pipe operator detected in input.
+.TP
+.B 12
+Simple external command queued for execution.
+.TP
+.B 13
+Piped external command queued for execution.
 .SH SEE ALSO
 .BR sh (1),
 .BR bash (1),
