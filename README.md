@@ -163,7 +163,7 @@ perm file.c
 - **≤ 100 lines** per function/code unit
 - **≤ 15 headers** per file — no bloated includes
 - **No external dependencies** — libc only
-- **Cross-platform portable** — compiles on Linux, BSD, macOS, and Windows (with MinGW/MSYS2)
+- **Cross-platform portable** — compiles on Linux, BSD, macOS, and Windows with MinGW/MSYS2 (Windows is optional for complex Linux reliant programs e.g Jfetch and JSH)
 - **GPLv3** — free software, always
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full code guidelines and how to add new utilities.
