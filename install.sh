@@ -54,7 +54,7 @@ mkdir -p "$MANDIR/man1" || { echo "ERROR: Failed to create $MANDIR/man1"; exit 1
 
 # Install binaries
 echo "Installing binaries to $BINDIR..."
-for bin in mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct; do
+for bin in mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct jfetch jsh; do
     if [ -f "$bin" ]; then
         cp "$bin" "$BINDIR/" || { echo "ERROR: Failed to copy $bin"; exit 1; }
         chmod 755 "$BINDIR/$bin" || { echo "ERROR: Failed to set permissions on $bin"; exit 1; }

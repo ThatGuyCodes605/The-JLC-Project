@@ -37,7 +37,7 @@ done
 
 # Remove binaries
 echo "Removing binaries from $BINDIR..."
-for bin in mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct; do
+for bin in mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt wm J whoisdat sim short duct jfetch jsh; do
     if [ -f "$BINDIR/$bin" ]; then
         rm -f "$BINDIR/$bin"
     fi

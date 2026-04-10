@@ -1,0 +1,37 @@
+.TH JSH 1 "2026" "The-JLC-Project" "User Commands"
+.SH NAME
+jsh \- Jamie's Shell
+.SH SYNOPSIS
+.B jsh
+.SH DESCRIPTION
+.B jsh
+is a minimal interactive shell supporting command execution, pipes, and
+basic builtins. It uses GNU readline for line editing and history.
+.SH BUILTINS
+.TP
+.B cd \fIdirectory\fR
+Change the current working directory.
+.TP
+.B exit
+Exit the shell.
+.SH FEATURES
+.TP
+.B Pipes
+Single pipe operator
+.B |
+is supported between two commands.
+.TP
+.B History
+Command history is maintained via GNU readline.
+.SH EXIT STATUS
+.TP
+.B 0
+Normal exit via the
+.B exit
+builtin.
+.SH SEE ALSO
+.BR sh (1),
+.BR bash (1),
+.BR readline (3)
+.SH AUTHORS
+The-JLC-Project contributors.
