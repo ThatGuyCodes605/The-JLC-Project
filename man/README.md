@@ -15,6 +15,7 @@ This directory contains man pages for all utilities in The JLC Project.
 - `hd.1` - Print first lines of files
 - `hn.1` - Print or set hostname
 - `jfetch.1` - Display system information with ASCII art
+- `jsh` - A simple, minimal, and interactive shell
 - `jgrep.1` - Search for patterns in files
 - `lf.1` - List files
 - `lnk.1` - Create links

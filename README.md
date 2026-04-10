@@ -98,7 +98,7 @@ Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 | `dt`        | `date`     | `dt`                   | Print current time in human-readable format |
 | `duct`      | `uname -m` | `duct`                 | Print machine architecture                  |
 | `jfetch`    | `neofetch` | `jfetch`               | Display system info with ASCII art          |
-
+| `jsh`       | `bash`     | `jsh`                  | A simple, minimal, and interactive shell    |
 ---
 
 ## Usage Examples

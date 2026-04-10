@@ -6,52 +6,39 @@ jsh \- Jamie's Shell
 .SH DESCRIPTION
 .B jsh
 is a minimal interactive shell supporting command execution, pipes, and
-basic builtins. It uses GNU readline for line editing and history.
+advanced command chaining[cite: 1]. It uses GNU readline for line editing and history[cite: 2].
+.PP
+The shell supports the following operators:
+.TP
+.B |
+Pipes the output of one command to the input of the next[cite: 1].
+.TP
+.B &&
+Logical AND; executes the second command only if the first succeeds.
+.TP
+.B &
+Executes the command in the background.
+.PP
+The shell is quote-aware and will ignore operators inside double quotes (e.g., "&&" or "|").
 .SH BUILTINS
 .TP
-.B cd \fIdirectory\fR
-Change the current working directory.
+.B cd [directory]
+Change the current working directory[cite: 2].
+.TP
+.B clear
+Clear the terminal screen.
 .TP
 .B exit
-Exit the shell.
-.SH FEATURES
+Exit the shell[cite: 3].
 .TP
-.B Pipes
-Single pipe operator
-.B |
-is supported between two commands.
+.B help
+Display a help message with available commands.
 .TP
-.B History
-Command history is maintained via GNU readline.
-.SH EXIT STATUS
+.B history
+Display the command history.
 .TP
-.B 0
-Normal exit via the
-.B exit
-builtin.
-.SS Internal Execution Codes
-These are returned internally and not visible to the user.
-.TP
-.B 2
-fork failed in command execution.
-.TP
-.B 3
-pipe initialisation failed.
-.TP
-.B 4, 5
-fork failed in piped execution.
-.TP
-.B 6\(en10
-Builtin command handled (help, ver, clear, history, cd).
-.TP
-.B 11
-Pipe operator detected in input.
-.TP
-.B 12
-Simple external command queued for execution.
-.TP
-.B 13
-Piped external command queued for execution.
+.B ver
+Display the current version of JSH.
 .SH SEE ALSO
 .BR sh (1),
 .BR bash (1),
