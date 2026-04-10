@@ -1,3 +1,4 @@
+/* Includes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,11 +7,37 @@
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+
+/* Defines */
 #define MAX_CMDS 64
 #define MAX_ARGS 64
 #define VER "0.0.1" 
 #define USR getenv("USER")
 #define clear() printf("\033[H\033[J")
+
+/* Function Prototypes */
+void init_shell();
+int take_input(char* s);
+void control_c_handler(int sig);
+int split_quoted(char* str, const char* delim, char** out);
+void parse_args(char* cmd, char** args);
+int exec_pipeline(char** cmds, int n, int background);
+void execute_input(char* input);
+int own_cmd_handler(char** parsed);
+
+int main(void){
+    char input[1024];
+    signal(SIGINT, control_c_handler);
+    init_shell();
+    while(1){
+        if(take_input(input)){
+            continue;
+        }
+        execute_input(input);
+    }
+    return 0;
+}
+
 
 void init_shell() {
     clear();
@@ -86,20 +113,6 @@ int split(char* str, const char* delim, char** out) {
     return i;
 }
 
-void parse_args(char* cmd, char** args) {
-    int i = 0;
-
-    char* saveptr;
-    char* token = strtok_r(cmd, " \t", &saveptr);
-
-    while (token && i < MAX_ARGS - 1) {
-        args[i++] = token;
-        token = strtok_r(NULL, " \t", &saveptr);
-    }
-
-    args[i] = NULL;
-}
-
 int exec_pipeline(char** cmds, int n, int background) {
     int pipes[n-1][2];
     if (n == 1) {
@@ -151,7 +164,100 @@ int exec_pipeline(char** cmds, int n, int background) {
 
     return 0;
 }
+int split_quoted(char* str, const char* delim, char** out) {
+    int i = 0;
+    int in_quotes = 0;
+    char* start = str;
+    int delim_len = strlen(delim);
 
+    for (char* p = str; *p != '\0'; p++) {
+        
+        if (*p == '"') {
+            in_quotes = !in_quotes;
+        }
+
+        
+        if (!in_quotes && strncmp(p, delim, delim_len) == 0) {
+            *p = '\0'; 
+            out[i++] = start;
+            p += delim_len - 1; 
+            start = p + 1;      
+        }
+
+        if (i >= MAX_CMDS - 1) break;
+    }
+
+    out[i++] = start;
+    out[i] = NULL;
+    return i;
+}
+
+void parse_args(char* cmd, char** args) {
+    int i = 0;
+    char* p = cmd;
+
+    while (*p && i < MAX_ARGS - 1) {
+        
+        while (*p == ' ' || *p == '\t') p++;
+        if (*p == '\0') break;
+
+        char* start;
+        if (*p == '"') {
+            start = ++p; 
+            while (*p && *p != '"') p++; 
+        } else {
+            start = p;
+            while (*p && *p != ' ' && *p != '\t') p++; 
+        }
+
+        if (*p != '\0') {
+            *p = '\0'; 
+            p++;
+        }
+
+        args[i++] = start;
+    }
+    args[i] = NULL;
+}
+
+void execute_input(char* input) {
+    char* and_cmds[MAX_CMDS];
+    
+    int and_count = split_quoted(input, "&&", and_cmds);
+
+    for (int i = 0; i < and_count; i++) {
+        char* cmd = and_cmds[i];
+
+        
+        int background = 0;
+        int in_quotes = 0;
+        for (char* p = cmd; *p; p++) {
+            if (*p == '"') in_quotes = !in_quotes;
+            if (*p == '&' && !in_quotes) {
+                background = 1;
+                *p = '\0';
+                break;
+            }
+        }
+
+        
+        char cmd_copy[1024];
+        strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1);
+        cmd_copy[sizeof(cmd_copy) - 1] = '\0';
+
+        char* args[MAX_ARGS];
+        parse_args(cmd_copy, args);
+        if (args[0] && own_cmd_handler(args)) {
+            continue;
+        }
+
+        
+        char* pipe_cmds[MAX_CMDS];
+        int pipe_count = split_quoted(cmd, "|", pipe_cmds);
+
+        exec_pipeline(pipe_cmds, pipe_count, background);
+    }
+}
 /*
 int exec_args(char** args){
     pid_t pid = fork();
@@ -171,7 +277,9 @@ int exec_args(char** args){
     }
 }
 */
-
+int own_cmd_handler(char** parsed);
+void parse_args(char* cmd, char** args);
+int split_quoted(char* str, const char* delim, char** out);
 int own_cmd_handler(char** parsed){
     if (strcmp(parsed[0], "help") == 0){
         printf("JSH - Jamie's Shell\n");
@@ -211,57 +319,6 @@ int own_cmd_handler(char** parsed){
     else if (strcmp(parsed[0], "exit") == 0){
         printf("Exiting JSH...\n");
         exit(0);
-    }
-    return 0;
-}
-void execute_input(char* input) {
-    char* and_cmds[MAX_CMDS];
-    int and_count = split(input, "&&", and_cmds);
-
-    for (int i = 0; i < and_count; i++) {
-        char* cmd = and_cmds[i];
-
-        /* check background */
-        int background = 0;
-        if (strchr(cmd, '&')) {
-            background = 1;
-            cmd[strcspn(cmd, "&")] = '\0';
-        }
-
-        /* FIX: Create a temporary copy of cmd for built-in parsing */
-        char cmd_copy[1024];
-        strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1);
-        cmd_copy[sizeof(cmd_copy) - 1] = '\0';
-
-        /* handle built-in commands using the copy */
-        char* args[MAX_ARGS];
-        parse_args(cmd_copy, args);
-        if (args[0] && own_cmd_handler(args)) {
-            continue;
-        }
-
-        /* split pipes using the untouched original cmd */
-        char* pipe_cmds[MAX_CMDS];
-        int pipe_count = split(cmd, "|", pipe_cmds);
-
-        /* execute pipeline */
-        int status = exec_pipeline(pipe_cmds, pipe_count, background);
-
-        /* stop on failure for && */
-        if (status != 0){
-            break;
-        }
-    }
-}
-int main(void){
-    char input[1024];
-    signal(SIGINT, control_c_handler);
-    init_shell();
-    while(1){
-        if(take_input(input)){
-            continue;
-        }
-        execute_input(input);
     }
     return 0;
 }
