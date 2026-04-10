@@ -29,7 +29,6 @@ int main(void){
     char *hostname = uinfo.nodename;
     char *os = uinfo.sysname;
     char *kernel = uinfo.release;
-    char uptime[256];
     time_t uptime_seconds = meminfo.uptime;
     int days = uptime_seconds / 86400;
     int hours = (uptime_seconds % 86400) / 3600;
@@ -76,7 +75,6 @@ int main(void){
         totaldisk_d = totaldisk_d / 1048576.0;
         freedisk_d = freedisk_d / 1048576.0;
     }
-    double useddisk_d = totaldisk_d - freedisk_d;
     /* ascii art */
     const char *art[] = {
         "       .--.      ",
