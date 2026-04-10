@@ -15,7 +15,6 @@
 /* color codes */
 #define YEL "\033[33m"
 #define WHT "\033[97m"
-#define WHTBG "\033[107m"
 #define RST "\033[0m"
 
 int main(void){
@@ -41,7 +40,7 @@ int main(void){
     double totaldisk_d = ((long long)diskinfo.f_blocks * (long long)diskinfo.f_frsize);
     double freedisk_d  = ((long long)diskinfo.f_bavail * (long long)diskinfo.f_frsize);
     double useddisk_gb = (((long long)diskinfo.f_blocks - (long long)diskinfo.f_bfree) * (long long)diskinfo.f_frsize) / 1073741824.0;
-    double totaldisk_tb = totaldisk_d / 1099511627776.0;
+    double totaldisk_gb = totaldisk_d / 1073741824.0;
     const char *shell = getenv("SHELL");
     const char *terminal = getenv("TERM");
     char wm_name[64] = "unknown";
@@ -96,7 +95,7 @@ int main(void){
     printf("%s  " YEL "Kernel:" RST " " WHT "%s" RST "\n",     art[2], kernel);
     printf("%s  " YEL "Uptime:" RST " " WHT "%d days, %d hours, %d minutes" RST "\n", art[3], days, hours, minutes);
     printf("%s  " YEL "RAM:" RST " " WHT "%ld %s / %ld %s" RST "\n",        art[4], freeram, ram_unit, totalram, ram_unit);
-    printf("%s   " YEL "Disk:" RST " " WHT "%.0f GB / %.1f TB" RST "\n", art[5], useddisk_gb, totaldisk_tb);
+    printf("%s   " YEL "Disk:" RST " " WHT "%.0f GB / %.1f GB" RST "\n", art[5], useddisk_gb, totaldisk_gb);
     printf("%s   " YEL "Shell:" RST " " WHT "%s" RST "\n",      art[6], shell);
     printf("%s " YEL "Terminal:" RST " " WHT "%s" RST "\n",   pad, terminal);
     printf("%s " YEL "WM:" RST " " WHT "%s" RST "\n",         pad, wm_name);
