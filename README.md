@@ -75,6 +75,8 @@ Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 | Binary  | Like   | Usage                          | Description                                      |
 |---------|--------|--------------------------------|--------------------------------------------------|
 | `jgrep` | `grep` | `jgrep <pattern> [file]`       | Search for a pattern; reads stdin if no file     |
+| `short` | `sort` | `short <file>`                 | Optimized sort implementation                    |
+| `sim`   | `yes`  | `sim`                          | Print infinite "y" strings                       |
 
 ### File Metadata
 
@@ -85,13 +87,17 @@ Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 
 ### System
 
-| Binary  | Like       | Usage           | Description                                 |
-|---------|------------|-----------------|---------------------------------------------|
-| `hn`    | `hostname` | `hn [name]`     | Show hostname; optionally set it            |
-| `env`   | `printenv` | `env [prefix]`  | Print environment; optional prefix filter   |
-| `print` | `echo`     | `print "text"`  | Print a string to stdout                    |
-| `nap`   | `sleep`    | `nap <seconds>` | Sleep for a specified number of seconds     |
-| `dt`    | `date`     | `dt`            | Print current time in human-readable format |
+| Binary      | Like       | Usage                  | Description                                 |
+|-------------|------------|------------------------|---------------------------------------------|
+| `hn`        | `hostname` | `hn [name]`            | Show hostname; optionally set it            |
+| `wm`        | `whoami`   | `wm`                   | Print the current user                      |
+| `whoisdat`  | `whoami`   | `whoisdat`             | Print the current user (alternative)        |
+| `env`       | `printenv` | `env [prefix]`         | Print environment; optional prefix filter   |
+| `print`     | `echo`     | `print "text"`         | Print a string to stdout                    |
+| `nap`       | `sleep`    | `nap <seconds>`        | Sleep for a specified number of seconds     |
+| `dt`        | `date`     | `dt`                   | Print current time in human-readable format |
+| `duct`      | `uname -m` | `duct`                 | Print machine architecture                  |
+| `jfetch`    | `neofetch` | `jfetch`               | Display system info with ASCII art          |
 
 ---
 
