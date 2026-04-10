@@ -161,7 +161,7 @@ perm file.c
 
 - **One file, one job** — each utility is a single `.c` file with a single purpose
 - **≤ 100 lines** per function/code unit
-- **≤ 5 headers** per file — no bloated includes
+- **≤ 15 headers** per file — no bloated includes
 - **No external dependencies** — libc only
 - **Cross-platform portable** — compiles on Linux, BSD, macOS, and Windows (with MinGW/MSYS2)
 - **GPLv3** — free software, always
