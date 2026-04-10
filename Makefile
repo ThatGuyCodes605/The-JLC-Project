@@ -34,15 +34,12 @@ install: all
 			install -m 644 "$$man" "$(MANDIR)/"; \
 		fi \
 	done
-	# Update man database if mandb exists
-	@if command -v mandb >/dev/null 2>&1; then mandb -q; fi
 
 # Uninstall
 uninstall:
 	@echo "Removing binaries and man pages"
 	-rm -f $(BINDIR)/$(BINS)
 	-rm -f $(addprefix $(MANDIR)/, $(notdir $(MANS)))
-	@if command -v mandb >/dev/null 2>&1; then mandb -q; fi
 
 # Clean build artifacts
 clean:
