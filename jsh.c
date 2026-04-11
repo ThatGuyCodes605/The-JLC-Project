@@ -7,24 +7,7 @@
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-/* Defines */
-#define MAX_CMDS 64
-#define MAX_ARGS 64
-#define VER "1.0.0" 
-#define USR getenv("USER")
-#define clear() printf("\033[H\033[J")
-
-/* Function Prototypes */
-void init_shell();
-int take_input(char* s);
-void control_c_handler(int sig);
-int split_quoted(char* str, const char* delim, char** out);
-void parse_args(char* cmd, char** args);
-int exec_pipeline(char** cmds, int n, int background);
-void execute_input(char* input);
-int own_cmd_handler(char** parsed);
-char* expand_input(const char* src);
+#include "jsh.h"
 
 int main(void){
     char input[1024];
@@ -38,8 +21,7 @@ int main(void){
     }
     return 0;
 }
-
-
+/* Functions */
 void init_shell() {
     clear();
     printf("Initializing JSH...\n");
@@ -68,9 +50,9 @@ int take_input(char* s){
     char prompt[1536];
     char cwd[1024];
     char hostname[256];
-    getcwd(cwd, sizeof(cwd));
-    gethostname(hostname, sizeof(hostname));
-    snprintf(prompt, sizeof(prompt), "%s@%s:%s$ ", USR, hostname, cwd);
+    getcwd(cwd, sizeof(cwd)); /* Get the current working directory */
+    gethostname(hostname, sizeof(hostname)); /* Get the hostname */
+    snprintf(prompt, sizeof(prompt), "%s@%s:%s$ ", USR, hostname, cwd); /* Construct the prompt string */
     char* input;
     do {
         input = readline(prompt);
@@ -114,152 +96,50 @@ int split(char* str, const char* delim, char** out) {
     return i;
 }
 
-int exec_pipeline(char** cmds, int n, int background) {
-    int pipes[n-1][2];
-    if (n == 1) {
-        pid_t pid = fork();
-        if (pid == 0) {
-            char* args[MAX_ARGS];
-            parse_args(cmds[0], args);
-            execvp(args[0], args);
-            perror("exec failed");
-            exit(1);
-        }
-        if (!background)
-            wait(NULL);
-        return 0;
-    }
-    for (int i = 0; i < n-1; i++)
-        pipe(pipes[i]);
-
-    for (int i = 0; i < n; i++) {
-        if (fork() == 0) {
-            if (i > 0){
-
-                dup2(pipes[i-1][0], STDIN_FILENO);
-
-            if (i < n-1)
-                dup2(pipes[i][1], STDOUT_FILENO);
-
-            for (int j = 0; j < n-1; j++) {
-                close(pipes[j][0]);
-                close(pipes[j][1]);
-            }
-
-            char* args[MAX_ARGS];
-            parse_args(cmds[i], args);
-
-            execvp(args[0], args);
-            perror("exec failed");
-            exit(1);
-        }
-    }
-
-    for (int i = 0; i < n-1; i++) {
-        close(pipes[i][0]);
-        close(pipes[i][1]);
-    }
-
-    if (!background)
-        for (int i = 0; i < n; i++)
-            wait(NULL);
-    }
-    return 0;
-}
-int split_quoted(char* str, const char* delim, char** out) {
-    int i = 0;
-    int in_quotes = 0;
-    char* start = str;
+int split_quoted(char* str, const char* delim, char** out){
+    int i = 0; /*/ Index for output array */
+    char* start = str; /*/ Start of the current token */
+    int in_quotes = 0; /*/ Flag to track if we're inside quotes */
     int delim_len = strlen(delim);
-
-    for (char* p = str; *p != '\0'; p++) {
-        
-        if (*p == '"') {
-            in_quotes = !in_quotes;
+    for(char* p = str; *p != '\0'; p++){ /*/ Iterate through the string */
+        if(*p == '"') in_quotes = !in_quotes; /*/ Toggle quote flag */
+        if(!in_quotes && strncmp(p, delim, delim_len) == 0){ /*/ Check for delimiter */
+            *p = '\0'; /* Null-terminate the token */
+            out[i++] = start; /*/ Store the token */
+            p += delim_len - 1; /* Move past the delimiter */
+            start = p + 1; /*/ Set start for the next token */
         }
-
-        
-        if (!in_quotes && strncmp(p, delim, delim_len) == 0) {
-            *p = '\0'; 
-            out[i++] = start;
-            p += delim_len - 1; 
-            start = p + 1;      
-        }
-
-        if (i >= MAX_CMDS - 1) break;
     }
-
-    out[i++] = start;
-    out[i] = NULL;
-    return i;
-}
-
+} 
 void parse_args(char* cmd, char** args) {
-    int i = 0;
-    char* p = cmd;
+    int i = 0; /* Index for args array */
+    char* p = cmd; /* Pointer to traverse the command string */
 
-    while (*p && i < MAX_ARGS - 1) {
+    while (*p && i < MAX_ARGS - 1) { /* Loop until end of string or max args reached */ 
         
-        while (*p == ' ' || *p == '\t') p++;
-        if (*p == '\0') break;
+        while (*p == ' ' || *p == '\t') p++; /* Skip leading whitespace */
+        if (*p == '\0') break; /* End of string */
 
-        char* start;
-        if (*p == '"') {
-            start = ++p; 
-            while (*p && *p != '"') p++; 
+        char* start; /* Start of the current argument */
+        if (*p == '"') { /* Handle quoted argument */
+            start = ++p; /* Skip the opening quote */
+            while (*p && *p != '"') p++; /* Move to the closing quote */
         } else {
-            start = p;
-            while (*p && *p != ' ' && *p != '\t') p++; 
+            start = p; /* Start of a non-quoted argument */
+            while (*p && *p != ' ' && *p != '\t') p++; /* Move to the next whitespace */
         }
 
-        if (*p != '\0') {
-            *p = '\0'; 
-            p++;
+        if (*p != '\0') { /* Null-terminate the argument */
+            *p = '\0'; /* Null-terminate the argument */
+            p++; /* Move past the null terminator */
         }
 
-        args[i++] = start;
+        args[i++] = start; /* Store the argument in the args array */
     }
-    args[i] = NULL;
+    args[i] = NULL; /* Null-terminate the args array */
 }
 
-void execute_input(char* input) {
-    char* expanded = expand_input(input);   
-    char* and_cmds[MAX_CMDS];
-    int and_count = split_quoted(expanded, "&&", and_cmds);  
-    for (int i = 0; i < and_count; i++) {
-        char* cmd = and_cmds[i];
 
-        
-        int background = 0;
-        int in_quotes = 0;
-        for (char* p = cmd; *p; p++) {
-            if (*p == '"') in_quotes = !in_quotes;
-            if (*p == '&' && !in_quotes) {
-                background = 1;
-                *p = '\0';
-                break;
-            }
-        }
-
-        
-        char cmd_copy[1024];
-        strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1);
-        cmd_copy[sizeof(cmd_copy) - 1] = '\0';
-
-        char* args[MAX_ARGS];
-        parse_args(cmd_copy, args);
-        if (args[0] && own_cmd_handler(args)) {
-            continue;
-        }
-
-        
-        char* pipe_cmds[MAX_CMDS];
-        int pipe_count = split_quoted(cmd, "|", pipe_cmds);
-
-        exec_pipeline(pipe_cmds, pipe_count, background);
-    }
-    free(expanded);
-}
 /*
 int exec_args(char** args){
     pid_t pid = fork();
@@ -321,99 +201,92 @@ int own_cmd_handler(char** parsed){
     }
     return 0;
 }
-char* expand_input(const char* src) {
-    size_t out_size = 4096;
-    char* out = malloc(out_size);
-    size_t out_len = 0;
-    int in_single = 0;
-    const char* p = src;
+int exec_pipeline(char** cmds, int n, int background) {
+    int pipes[n-1][2];
+    if (n == 1) {
+        pid_t pid = fork(); /* Fork a child process */
+        if (pid == 0) {
+            char* args[MAX_ARGS];
+            parse_args(cmds[0], args); /* Parse the command into arguments */
+            execvp(args[0], args); /* Execute the command */
+            perror("exec failed"); /* If execvp returns, it means execution failed */
+            exit(1); /* Exit the child process with an error code */
+        }
+        if (!background)
+            wait(NULL); /* Wait for the child process to finish if not running in background */
+        return 0;
+    }
+    for (int i = 0; i < n-1; i++)
+        pipe(pipes[i]); /* Create pipes for inter-process communication */
 
-#define APPEND(c) do { \
-    if (out_len + 1 >= out_size) { out_size *= 2; out = realloc(out, out_size); } \
-    out[out_len++] = (c); \
-} while(0)
-#define APPENDS(s) do { \
-    size_t _l = strlen(s); \
-    while (out_len + _l + 1 >= out_size) { out_size *= 2; out = realloc(out, out_size); } \
-    memcpy(out + out_len, s, _l); out_len += _l; \
-} while(0)
+    for (int i = 0; i < n; i++) {
+        if (fork() == 0) {
+            if (i > 0){
 
-    while (*p) {
-        if (*p == '\'') { in_single = !in_single; APPEND(*p++); continue; }
-        if (in_single)  { APPEND(*p++); continue; }
+                dup2(pipes[i-1][0], STDIN_FILENO); /* Redirect standard input to read end of the previous pipe */
 
-        if (*p == '$') {
-            p++;
-            if (*p == '(') {
-                p++; /* skip ( */
-                int depth = 1;
-                const char* start = p;
-                while (*p && depth > 0) {
-                    if      (*p == '(') depth++;
-                    else if (*p == ')') depth--;
-                    p++;
-                }
-                /* p now one past closing ), cmd is [start, p-1) */
-                size_t cmd_len = (p - 1) - start;
-                char* cmd = malloc(cmd_len + 1);
-                memcpy(cmd, start, cmd_len);
-                cmd[cmd_len] = '\0';
+            if (i < n-1)
+                dup2(pipes[i][1], STDOUT_FILENO); /* Redirect standard output to write end of the current pipe */
 
-                char* expanded_cmd = expand_input(cmd);
-                free(cmd);
-
-                FILE* f = popen(expanded_cmd, "r");
-                free(expanded_cmd);
-                if (f) {
-                    char buf[4096];
-                    size_t n;
-                    size_t total = 0;
-                    char* tmp = malloc(4096);
-                    size_t tmp_size = 4096;
-                    while ((n = fread(buf, 1, sizeof(buf), f)) > 0) {
-                        while (total + n + 1 >= tmp_size) { tmp_size *= 2; tmp = realloc(tmp, tmp_size); }
-                        memcpy(tmp + total, buf, n);
-                        total += n;
-                    }
-                    pclose(f);
-                    /* strip trailing newlines */
-                    while (total > 0 && (tmp[total-1] == '\n' || tmp[total-1] == '\r'))
-                        total--;
-                    tmp[total] = '\0';
-                    APPENDS(tmp);
-                    free(tmp);
-                }
-            } else if (*p == '{') {
-                p++;
-                const char* start = p;
-                while (*p && *p != '}') p++;
-                size_t len = p - start;
-                if (*p == '}') p++;
-                char var[256];
-                if (len < sizeof(var)) {
-                    memcpy(var, start, len); var[len] = '\0';
-                    char* val = getenv(var);
-                    if (val) APPENDS(val);
-                }
-            } else if (isalnum((unsigned char)*p) || *p == '_') {
-                const char* start = p;
-                while (isalnum((unsigned char)*p) || *p == '_') p++;
-                size_t len = p - start;
-                char var[256];
-                if (len < sizeof(var)) {
-                    memcpy(var, start, len); var[len] = '\0';
-                    char* val = getenv(var);
-                    if (val) APPENDS(val);
-                }
-            } else {
-                APPEND('$');
+            for (int j = 0; j < n-1; j++) {
+                close(pipes[j][0]);
+                close(pipes[j][1]);
             }
-        } else {
-            APPEND(*p++);
+
+            char* args[MAX_ARGS];
+            parse_args(cmds[i], args); /* Parse the command into arguments */
+
+            execvp(args[0], args); /* Execute the command */
+            perror("exec failed"); /* If execvp returns, it means execution failed */
+            exit(1); /* Exit the child process with an error code */
         }
     }
-    out[out_len] = '\0';
-#undef APPEND
-#undef APPENDS
-    return out;
+
+    for (int i = 0; i < n-1; i++) {
+        close(pipes[i][0]); /* Close the read end of the pipe in the parent process */
+        close(pipes[i][1]); /* Close the write end of the pipe in the parent process */
+    }
+
+    if (!background)
+        for (int i = 0; i < n; i++)
+            wait(NULL); /* Wait for all child processes to finish if not running in background */
+    }
+    return 0;
 }
+void execute_input(char* input) {
+    char* and_cmds[MAX_CMDS];
+    int and_count = split_quoted(input, "&&", and_cmds); /* Split input by '&&' while respecting quotes */
+    for (int i = 0; i < and_count; i++) {
+        char* cmd = and_cmds[i];
+
+        
+        int background = 0;
+        int in_quotes = 0;
+        for (char* p = cmd; *p; p++) { /* Iterate through the command string */
+            if (*p == '"') in_quotes = !in_quotes;
+            if (*p == '&' && !in_quotes) {
+                background = 1;
+                *p = '\0';
+                break;
+            }
+        }
+
+        
+        char cmd_copy[1024];
+        strncpy(cmd_copy, cmd, sizeof(cmd_copy) - 1); /* Copy command to a temporary buffer for parsing */
+        cmd_copy[sizeof(cmd_copy) - 1] = '\0';
+
+        char* args[MAX_ARGS]; /* Array to hold parsed arguments */
+        parse_args(cmd_copy, args); /* Parse the command into arguments */
+        if (args[0] && own_cmd_handler(args)) { /* Check if it's a built-in command and handle it */
+            continue; /* If it was a built-in command, skip to the next command */
+        }
+
+        
+        char* pipe_cmds[MAX_CMDS]; /* Array to hold piped commands */
+        int pipe_count = split_quoted(cmd, "|", pipe_cmds); /* Split command by '|' while respecting quotes */
+
+        exec_pipeline(pipe_cmds, pipe_count, background); /* Execute the pipeline of commands */
+    }
+}
+
