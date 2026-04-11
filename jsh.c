@@ -11,7 +11,7 @@
 /* Defines */
 #define MAX_CMDS 64
 #define MAX_ARGS 64
-#define VER "0.0.1" 
+#define VER "1.0.0" 
 #define USR getenv("USER")
 #define clear() printf("\033[H\033[J")
 
@@ -24,6 +24,7 @@ void parse_args(char* cmd, char** args);
 int exec_pipeline(char** cmds, int n, int background);
 void execute_input(char* input);
 int own_cmd_handler(char** parsed);
+char* expand_input(const char* src);
 
 int main(void){
     char input[1024];
@@ -133,7 +134,8 @@ int exec_pipeline(char** cmds, int n, int background) {
 
     for (int i = 0; i < n; i++) {
         if (fork() == 0) {
-            if (i > 0)
+            if (i > 0){
+
                 dup2(pipes[i-1][0], STDIN_FILENO);
 
             if (i < n-1)
@@ -161,7 +163,7 @@ int exec_pipeline(char** cmds, int n, int background) {
     if (!background)
         for (int i = 0; i < n; i++)
             wait(NULL);
-
+    }
     return 0;
 }
 int split_quoted(char* str, const char* delim, char** out) {
@@ -221,10 +223,9 @@ void parse_args(char* cmd, char** args) {
 }
 
 void execute_input(char* input) {
+    char* expanded = expand_input(input);   
     char* and_cmds[MAX_CMDS];
-    
-    int and_count = split_quoted(input, "&&", and_cmds);
-
+    int and_count = split_quoted(expanded, "&&", and_cmds);  
     for (int i = 0; i < and_count; i++) {
         char* cmd = and_cmds[i];
 
@@ -257,6 +258,7 @@ void execute_input(char* input) {
 
         exec_pipeline(pipe_cmds, pipe_count, background);
     }
+    free(expanded);
 }
 /*
 int exec_args(char** args){
@@ -277,9 +279,6 @@ int exec_args(char** args){
     }
 }
 */
-int own_cmd_handler(char** parsed);
-void parse_args(char* cmd, char** args);
-int split_quoted(char* str, const char* delim, char** out);
 int own_cmd_handler(char** parsed){
     if (strcmp(parsed[0], "help") == 0){
         printf("JSH - Jamie's Shell\n");
@@ -321,4 +320,100 @@ int own_cmd_handler(char** parsed){
         exit(0);
     }
     return 0;
+}
+char* expand_input(const char* src) {
+    size_t out_size = 4096;
+    char* out = malloc(out_size);
+    size_t out_len = 0;
+    int in_single = 0;
+    const char* p = src;
+
+#define APPEND(c) do { \
+    if (out_len + 1 >= out_size) { out_size *= 2; out = realloc(out, out_size); } \
+    out[out_len++] = (c); \
+} while(0)
+#define APPENDS(s) do { \
+    size_t _l = strlen(s); \
+    while (out_len + _l + 1 >= out_size) { out_size *= 2; out = realloc(out, out_size); } \
+    memcpy(out + out_len, s, _l); out_len += _l; \
+} while(0)
+
+    while (*p) {
+        if (*p == '\'') { in_single = !in_single; APPEND(*p++); continue; }
+        if (in_single)  { APPEND(*p++); continue; }
+
+        if (*p == '$') {
+            p++;
+            if (*p == '(') {
+                p++; /* skip ( */
+                int depth = 1;
+                const char* start = p;
+                while (*p && depth > 0) {
+                    if      (*p == '(') depth++;
+                    else if (*p == ')') depth--;
+                    p++;
+                }
+                /* p now one past closing ), cmd is [start, p-1) */
+                size_t cmd_len = (p - 1) - start;
+                char* cmd = malloc(cmd_len + 1);
+                memcpy(cmd, start, cmd_len);
+                cmd[cmd_len] = '\0';
+
+                char* expanded_cmd = expand_input(cmd);
+                free(cmd);
+
+                FILE* f = popen(expanded_cmd, "r");
+                free(expanded_cmd);
+                if (f) {
+                    char buf[4096];
+                    size_t n;
+                    size_t total = 0;
+                    char* tmp = malloc(4096);
+                    size_t tmp_size = 4096;
+                    while ((n = fread(buf, 1, sizeof(buf), f)) > 0) {
+                        while (total + n + 1 >= tmp_size) { tmp_size *= 2; tmp = realloc(tmp, tmp_size); }
+                        memcpy(tmp + total, buf, n);
+                        total += n;
+                    }
+                    pclose(f);
+                    /* strip trailing newlines */
+                    while (total > 0 && (tmp[total-1] == '\n' || tmp[total-1] == '\r'))
+                        total--;
+                    tmp[total] = '\0';
+                    APPENDS(tmp);
+                    free(tmp);
+                }
+            } else if (*p == '{') {
+                p++;
+                const char* start = p;
+                while (*p && *p != '}') p++;
+                size_t len = p - start;
+                if (*p == '}') p++;
+                char var[256];
+                if (len < sizeof(var)) {
+                    memcpy(var, start, len); var[len] = '\0';
+                    char* val = getenv(var);
+                    if (val) APPENDS(val);
+                }
+            } else if (isalnum((unsigned char)*p) || *p == '_') {
+                const char* start = p;
+                while (isalnum((unsigned char)*p) || *p == '_') p++;
+                size_t len = p - start;
+                char var[256];
+                if (len < sizeof(var)) {
+                    memcpy(var, start, len); var[len] = '\0';
+                    char* val = getenv(var);
+                    if (val) APPENDS(val);
+                }
+            } else {
+                APPEND('$');
+            }
+        } else {
+            APPEND(*p++);
+        }
+    }
+    out[out_len] = '\0';
+#undef APPEND
+#undef APPENDS
+    return out;
 }

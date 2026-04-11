@@ -5,43 +5,94 @@ jsh \- Jamie's Shell
 .B jsh
 .SH DESCRIPTION
 .B jsh
-is a minimal interactive shell supporting command execution, pipes, and
-advanced command chaining[cite: 1]. It uses GNU readline for line editing and history[cite: 2].
+is a minimal interactive shell supporting command execution, pipes,
+command chaining, background jobs, and word expansion.
+It uses GNU readline for line editing and persistent history.
 .PP
-The shell supports the following operators:
+Before a command line is executed, the shell performs word expansion on
+the entire input.
+Expansions are processed recursively, so nested forms such as
+.B $(cmd$(cmd))
+are supported.
+Single-quoted strings suppress all expansion.
+.SH EXPANSION
+.TP
+.BI $ VAR
+Replaced by the value of environment variable
+.IR VAR .
+.I VAR
+must consist of alphanumeric characters and underscores.
+.TP
+.BI ${ VAR }
+Brace-quoted form of variable expansion.
+Useful when the variable name is adjacent to other text.
+.TP
+.BI $( cmd )
+Command substitution.
+.I cmd
+is executed in a subshell via
+.BR popen (3)
+and its standard output replaces the expression.
+Trailing newlines are stripped.
+Nesting is supported:
+.B $(echo $(dt))
+works as expected.
+.SH OPERATORS
 .TP
 .B |
-Pipes the output of one command to the input of the next[cite: 1].
+Pipes the output of one command to the input of the next.
 .TP
 .B &&
-Logical AND; executes the second command only if the first succeeds.
+Executes the next command unconditionally after the previous one.
 .TP
 .B &
-Executes the command in the background.
-.PP
-The shell is quote-aware and will ignore operators inside double quotes (e.g., "&&" or "|").
+Runs the command in the background (no wait).
 .SH BUILTINS
 .TP
 .B cd [directory]
-Change the current working directory[cite: 2].
+Change the current working directory.
 .TP
 .B clear
 Clear the terminal screen.
 .TP
 .B exit
-Exit the shell[cite: 3].
+Exit the shell.
 .TP
 .B help
-Display a help message with available commands.
+Display a summary of built-in commands.
 .TP
 .B history
-Display the command history.
+Display the readline command history.
 .TP
 .B ver
-Display the current version of JSH.
+Display the current JSH version.
+.SH EXAMPLES
+.TP
+Variable expansion:
+.EX
+echo $HOME
+echo ${USER}@$(hn)
+.EE
+.TP
+Command substitution:
+.EX
+echo $(dt)
+cd $(echo /tmp)
+.EE
+.TP
+Nested substitution:
+.EX
+echo $(echo $(cwd))
+.EE
+.TP
+Pipeline with expansion:
+.EX
+mat $(echo notes.txt) | jgrep TODO
+.EE
 .SH SEE ALSO
 .BR sh (1),
 .BR bash (1),
-.BR readline (3)
+.BR readline (3),
+.BR popen (3)
 .SH AUTHORS
 The-JLC-Project contributors.
