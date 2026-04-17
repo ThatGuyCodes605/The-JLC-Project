@@ -48,7 +48,7 @@ Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 | `move` | `mv`    | `move <src> <dest>`            | Move or rename a file                            |
 | `del`  | `rm`    | `del [-r] <file>...`           | Delete file(s); `-r` removes directories         |
 | `lnk`  | `ln`    | `lnk [-s] <target> <link>`     | Hard link; `-s` creates a symbolic link          |
-| `tch`  | `touch` | `tch <file>...`                | Create file(s) or update modification dt       |
+| `tch`  | `touch` | `tch <file>...`                | Create file(s) or update modification dt         |
 | `brit` | `tee`   | `cmd \| brit <file>`           | Write stdin to both stdout and a file            |
 
 ### Directory Operations
@@ -99,6 +99,7 @@ Requires: `gcc`, `make`. On Windows, MinGW/MSYS2 or Cygwin is recommended.
 | `duct`      | `uname -m` | `duct`                 | Print machine architecture                  |
 | `jfetch`    | `neofetch` | `jfetch`               | Display system info with ASCII art          |
 | `jsh`       | `bash`     | `jsh`                  | A simple, minimal, and interactive shell    |
+| `clr`       | `clear`    | `clr`                  | Clears the terminal screen                  |
 ---
 
 ## Usage Examples
