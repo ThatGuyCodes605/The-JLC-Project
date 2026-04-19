@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "jsh.h"
+
 
 int main(void){
     char input[1024];
@@ -110,6 +112,9 @@ int split_quoted(char* str, const char* delim, char** out){
             start = p + 1; /*/ Set start for the next token */
         }
     }
+    out[i++] = start;
+    out[i] = NULL;
+    return i;
 } 
 void parse_args(char* cmd, char** args) {
     int i = 0; /* Index for args array */
@@ -221,12 +226,10 @@ int exec_pipeline(char** cmds, int n, int background) {
 
     for (int i = 0; i < n; i++) {
         if (fork() == 0) {
-            if (i > 0){
-
-                dup2(pipes[i-1][0], STDIN_FILENO); /* Redirect standard input to read end of the previous pipe */
-
+            if (i > 0)
+                dup2(pipes[i-1][0], STDIN_FILENO);
             if (i < n-1)
-                dup2(pipes[i][1], STDOUT_FILENO); /* Redirect standard output to write end of the current pipe */
+                dup2(pipes[i][1], STDOUT_FILENO);
 
             for (int j = 0; j < n-1; j++) {
                 close(pipes[j][0]);
@@ -234,11 +237,10 @@ int exec_pipeline(char** cmds, int n, int background) {
             }
 
             char* args[MAX_ARGS];
-            parse_args(cmds[i], args); /* Parse the command into arguments */
-
-            execvp(args[0], args); /* Execute the command */
-            perror("exec failed"); /* If execvp returns, it means execution failed */
-            exit(1); /* Exit the child process with an error code */
+            parse_args(cmds[i], args);
+            execvp(args[0], args);
+            perror("exec failed");
+            exit(1);
         }
     }
 
@@ -247,7 +249,7 @@ int exec_pipeline(char** cmds, int n, int background) {
         close(pipes[i][1]); /* Close the write end of the pipe in the parent process */
     }
 
-    if (!background)
+    if (!background){
         for (int i = 0; i < n; i++)
             wait(NULL); /* Wait for all child processes to finish if not running in background */
     }

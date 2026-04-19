@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(jsh C)
+set(CMAKE_C_STANDARD 11)
+find_library(READLINE readline)
+add_executable(jsh jsh.c)
+target_link_libraries(jsh readline)
