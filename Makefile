@@ -7,7 +7,7 @@ BINDIR ?= /usr/local/bin
 MANDIR ?= /usr/local/share/man/man1
 
 # Programs to build
-BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt duct wm whoisdat short sim jfetch jsh
+BINS = mat jgrep move cpy print lf perm spec srt hn chwn brit cnt hd tl tch mkd del lnk cwd env nap dt duct wm whoisdat short sim jfetch jsh clr
 
 # Manual pages
 MANS = man/man1/brit.1 man/man1/chwn.1 man/man1/cnt.1 man/man1/cpy.1 \
