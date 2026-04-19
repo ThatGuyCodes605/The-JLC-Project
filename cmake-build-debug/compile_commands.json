@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/cmake-build-debug",
+  "command": "C:\\PROGRA~1\\JETBRA~1\\CLION2~1.1\\bin\\mingw\\bin\\gcc.exe -g -std=gnu11 -fdiagnostics-color=always -o CMakeFiles\\jsh.dir\\jsh.c.obj -c C:\\Users\\Jamie\\Nextcloud\\Coding\\github\\The-JLC-Project\\jsh.c",
+  "file": "C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/jsh.c",
+  "output": "C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/cmake-build-debug/CMakeFiles/jsh.dir/jsh.c.obj"
+}
+]

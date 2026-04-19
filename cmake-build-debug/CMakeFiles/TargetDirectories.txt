@@ -1,0 +1,3 @@
+C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/cmake-build-debug/CMakeFiles/jsh.dir
+C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Jamie/Nextcloud/Coding/github/The-JLC-Project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
