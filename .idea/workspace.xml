@@ -27,12 +27,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="added nap.c">
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jsh.c" beforeDir="false" afterPath="$PROJECT_DIR$/jsh.c" afterDir="false" />
-    </list>
+    <list default="true" id="f932c76e-7a3a-4415-83e6-03453cedfe38" name="Changes" comment="fixed jsh" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,12 +52,12 @@
     &quot;assignee&quot;: &quot;ThatGuyCodes605&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:ThatGuyCodes605/The-JLC-Project&quot;,
-    &quot;accountId&quot;: &quot;bdbcd365-49fe-4963-8ab9-9d70a624a7d3&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/thatguycodes605/The-JLC-Project",
+    "accountId": "f9975aee-022d-4ff0-a40a-3bd6c5ffc716"
   }
-}</component>
+}]]></component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="fzIulzPo" />
   </component>
@@ -137,7 +132,7 @@
       <updated>1774080597924</updated>
       <workItem from="1774080598936" duration="4198000" />
       <workItem from="1775668458101" duration="425000" />
-      <workItem from="1776622370761" duration="921000" />
+      <workItem from="1776622370761" duration="1794000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed cpy.c to follow suckless software laws and fixed HUGE bug in hn.c">
       <option name="closed" value="true" />
@@ -179,7 +174,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774104445317</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixed jsh">
+      <option name="closed" value="true" />
+      <created>1776623505038</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1776623505038</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fixed jsh">
+      <option name="closed" value="true" />
+      <created>1776623536865</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1776623536865</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,7 +218,8 @@
     <MESSAGE value="changed return 1 to return 0" />
     <MESSAGE value="change &quot;C99 or later for portability&quot; to &quot;C99 for portability&quot;" />
     <MESSAGE value="added nap.c" />
-    <option name="LAST_COMMIT_MESSAGE" value="added nap.c" />
+    <MESSAGE value="fixed jsh" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed jsh" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

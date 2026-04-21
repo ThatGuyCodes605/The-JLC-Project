@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="The-JLC-Project.vcxproj" Id="a9c78c7a-66d6-4e79-8f69-4096e75e470a" />
+</Solution>
