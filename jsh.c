@@ -8,7 +8,6 @@
 #include <sys/types.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "jsh.h"
 
 /* Defines */
 #define MAX_CMDS 64
@@ -161,26 +160,6 @@ void parse_args(char* cmd, char** args) {
     args[i] = NULL; /* Null-terminate the args array */
 }
 
-
-/*
-int exec_args(char** args){
-    pid_t pid = fork();
-    if(pid == -1){
-        perror("Fork failed");
-        return 2;
-    }
-    else if(pid == 0){
-        if(execvp(args[0], args) < 0){
-            perror("Execution failed");
-        }
-        exit(0);
-    }
-    else{
-        wait(NULL);
-        return 0;
-    }
-}
-*/
 int own_cmd_handler(char** parsed){
     if (strcmp(parsed[0], "help") == 0){
         printf("JSH - Jamie's Shell\n");
