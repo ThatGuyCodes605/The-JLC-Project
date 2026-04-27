@@ -7,9 +7,8 @@
 #include <sys/utsname.h>
 #include <sys/types.h>
 #include <pwd.h>
-#include <sys/sysinfo.h>
-#include <sys/statvfs.h>
 #include <time.h>
+#include <sys/statvfs.h>
 #include <string.h>
 
 /* color codes */
@@ -20,8 +19,14 @@
 int main(void){
     struct utsname uinfo;
     uname(&uinfo);
-    struct sysinfo meminfo;
-    sysinfo(&meminfo);
+    long long totalram = (long long) sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGESIZE);
+    long long usedram = (long long) sysconf(_SC_AVPHYS_PAGES) * sysconf(_SC_PAGESIZE);
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    long uptime = ts.tv_sec;
+    long days = uptime / 86400;
+    long hours = (uptime % 86400) / 3600;
+    long minutes = (uptime % 3600) / 60;
     struct statvfs diskinfo;
     statvfs("/", &diskinfo);
     struct passwd *pw = getpwuid(getuid());
@@ -29,13 +34,7 @@ int main(void){
     char *hostname = uinfo.nodename;
     char *os = uinfo.sysname;
     char *kernel = uinfo.release;
-    time_t uptime_seconds = meminfo.uptime;
-    int days = uptime_seconds / 86400;
-    int hours = (uptime_seconds % 86400) / 3600;
-    int minutes = (uptime_seconds % 3600) / 60;
-    long totalram = meminfo.totalram;
-    long freeram = meminfo.freeram;
-    const char *ram_unit = "";
+    const char *ram_unit = "B";
     double totaldisk_d = ((long long)diskinfo.f_blocks * (long long)diskinfo.f_frsize);
     double freedisk_d  = ((long long)diskinfo.f_bavail * (long long)diskinfo.f_frsize);
     double useddisk_gb = (((long long)diskinfo.f_blocks - (long long)diskinfo.f_bfree) * (long long)diskinfo.f_frsize) / 1073741824.0;
@@ -52,19 +51,24 @@ int main(void){
         if (wm_name[0] == '\0') strcpy(wm_name, "unknown");
     }
 
-    if (totalram > 1073741824) {
-        totalram = totalram / 1073741824; /* Convert to GB */
-        ram_unit = "GB";
+    if (totalram >= 1099511627776) {
+        totalram = totalram / 1099511627776;
+        usedram = usedram / 1099511627776;
+        ram_unit = "TiB";
+    } else if (totalram >= 1073741824) {
+        totalram = totalram / 1073741824;
+        usedram = usedram / 1073741824;
+        ram_unit = "GiB";
+    } else if (totalram >= 1048576) {
+        totalram = totalram / 1048576;
+        usedram = usedram / 10498576;
+        ram_unit = "MiB";
+    } else if (totalram >= 1024) {
+        totalram = totalram / 1024;
+        usedram = usedram /1024;
+        ram_unit = "KiB";
     }
-    if (freeram > 1073741824) {
-        freeram = freeram / 1073741824; /* Convert to GB */
-        ram_unit = "GB";
-    }
-    else {
-        totalram = totalram / 1048576; /* Convert to MB */
-        freeram = freeram / 1048576; /* Convert to MB */
-        ram_unit = "MB";
-    }
+    
     if (totaldisk_d > 1099511627776.0) {
         totaldisk_d = totaldisk_d / 1099511627776.0;
         freedisk_d = freedisk_d / 1099511627776.0;
@@ -91,9 +95,9 @@ int main(void){
     printf("%s  " YEL "%s" RST "@" YEL "%s" RST "\n",          art[0], username, hostname);
     printf("%s  " YEL "OS:" RST " " WHT "%s" RST "\n",         art[1], os);
     printf("%s  " YEL "Kernel:" RST " " WHT "%s" RST "\n",     art[2], kernel);
-    printf("%s  " YEL "Uptime:" RST " " WHT "%d days, %d hours, %d minutes" RST "\n", art[3], days, hours, minutes);
-    printf("%s  " YEL "RAM:" RST " " WHT "%ld %s / %ld %s" RST "\n",        art[4], freeram, ram_unit, totalram, ram_unit);
-    printf("%s   " YEL "Disk:" RST " " WHT "%.0f GB / %.1f GB" RST "\n", art[5], useddisk_gb, totaldisk_gb);
+    printf("%s  " YEL "Uptime:" RST " " WHT "%ld days, %ld hours, %ld minutes" RST "\n", art[3], days, hours, minutes);
+    printf("%s  " YEL "RAM:" RST " " WHT "%lld / %lld %s" RST "\n", art[4], usedram, totalram, ram_unit);
+    printf("%s   " YEL "Disk:" RST " " WHT "%.0f / %.1f GB" RST "\n", art[5], useddisk_gb, totaldisk_gb);
     printf("%s   " YEL "Shell:" RST " " WHT "%s" RST "\n",      art[6], shell);
     printf("%s " YEL "Terminal:" RST " " WHT "%s" RST "\n",   pad, terminal);
     printf("%s " YEL "WM:" RST " " WHT "%s" RST "\n",         pad, wm_name);
