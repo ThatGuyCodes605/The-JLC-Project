@@ -20,7 +20,7 @@ int main(void){
     struct utsname uinfo;
     uname(&uinfo);
     long long totalram = (long long) sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGESIZE);
-    long long freeram = (long long) sysconf(_SC_AVPHYS_PAGES) * sysconf(_SC_PAGESIZE);
+    long long usedram = (long long) sysconf(_SC_AVPHYS_PAGES) * sysconf(_SC_PAGESIZE);
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     long uptime = ts.tv_sec;
@@ -53,22 +53,22 @@ int main(void){
 
     if (totalram >= 1099511627776) {
         totalram = totalram / 1099511627776;
-        freeram = freeram / 1099511627776;
+        usedram = usedram / 1099511627776;
         ram_unit = "TiB";
     } else if (totalram >= 1073741824) {
         totalram = totalram / 1073741824;
-        freeram = freeram / 1073741824;
+        usedram = usedram / 1073741824;
         ram_unit = "GiB";
     } else if (totalram >= 1048576) {
         totalram = totalram / 1048576;
-        freeram = freeram / 10498576;
+        usedram = usedram / 10498576;
         ram_unit = "MiB";
     } else if (totalram >= 1024) {
         totalram = totalram / 1024;
-        freeram = freeram /1024;
+        usedram = usedram /1024;
         ram_unit = "KiB";
     }
-
+    
     if (totaldisk_d > 1099511627776.0) {
         totaldisk_d = totaldisk_d / 1099511627776.0;
         freedisk_d = freedisk_d / 1099511627776.0;
@@ -96,8 +96,8 @@ int main(void){
     printf("%s  " YEL "OS:" RST " " WHT "%s" RST "\n",         art[1], os);
     printf("%s  " YEL "Kernel:" RST " " WHT "%s" RST "\n",     art[2], kernel);
     printf("%s  " YEL "Uptime:" RST " " WHT "%ld days, %ld hours, %ld minutes" RST "\n", art[3], days, hours, minutes);
-    printf("%s  " YEL "RAM:" RST " " WHT "%lld / %lld %s" RST "\n", art[4], freeram, totalram, ram_unit);
-    printf("%s   " YEL "Disk:" RST " " WHT "%.0f GB / %.1f GB" RST "\n", art[5], useddisk_gb, totaldisk_gb);
+    printf("%s  " YEL "RAM:" RST " " WHT "%lld / %lld %s" RST "\n", art[4], usedram, totalram, ram_unit);
+    printf("%s   " YEL "Disk:" RST " " WHT "%.0f / %.1f GB" RST "\n", art[5], useddisk_gb, totaldisk_gb);
     printf("%s   " YEL "Shell:" RST " " WHT "%s" RST "\n",      art[6], shell);
     printf("%s " YEL "Terminal:" RST " " WHT "%s" RST "\n",   pad, terminal);
     printf("%s " YEL "WM:" RST " " WHT "%s" RST "\n",         pad, wm_name);
